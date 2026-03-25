@@ -15,7 +15,13 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "next/link": ["./src/shims/next-link.tsx"],
+      "next/image": ["./src/shims/next-image.tsx"],
+      "next/navigation": ["./src/shims/next-navigation.tsx"],
+      "next/font/google": ["./src/shims/next-font-google.ts"],
+      "@vercel/analytics/next": ["./src/shims/vercel-analytics-next.tsx"],
+      "next": ["./src/shims/next.ts"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "vite.config.ts", "vite-env.d.ts"],
