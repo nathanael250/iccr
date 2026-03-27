@@ -25,7 +25,7 @@ export default function Home() {
       image: "/image.png",
       category: "Worship",
       title: "Sunday Worship Service",
-      schedule: "Every Sunday at 9:00 AM",
+      schedule: "Every Sunday, 7:00 AM - 3:00 PM",
       description:
         "Join us for our weekly worship service where we gather as a community to glorify God.",
       cta: "Learn More",

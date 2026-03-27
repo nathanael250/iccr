@@ -26,8 +26,8 @@ export default function Membership() {
       <section className="grid min-h-[calc(100vh-5.5rem)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
         <div className="relative min-h-[340px] overflow-hidden lg:min-h-full">
           <img
-            src="/pexels-andrew-degarde-148550826-29422234.jpg"
-            alt="Impact For Christ Church interior"
+            src="/image.png"
+            alt="Impact For Christ Church ministry gathering"
             className="h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,95,171,0.12),rgba(17,24,39,0.35))]" />

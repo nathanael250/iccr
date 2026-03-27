@@ -1,287 +1,258 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+'use client'
+
 import Link from 'next/link'
-import { Heart, Gift, Zap, TrendingUp } from 'lucide-react'
+import { useState } from 'react'
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
+  BadgeDollarSign,
+  CheckCircle2,
+  CreditCard,
+  HandCoins,
+  ShieldCheck,
+  Smartphone,
+} from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export const metadata = {
   title: 'Give - Impact For Christ Church In Rwanda',
   description: 'Support our mission through generous giving to Impact For Christ Church In Rwanda.',
 }
 
+const givingPurposes = [
+  'Tithe',
+  'Offering',
+  'Thanksgiving',
+  'Project Support',
+  'Charity & Outreach',
+  'Special Seed',
+]
+
+const currencies = ['RWF', 'USD', 'EUR']
+
+type PaymentCategory = 'mobile-money' | 'credit-card'
+
 export default function Give() {
+  const [paymentCategory, setPaymentCategory] = useState<PaymentCategory>('credit-card')
+
   return (
-    <div className="w-full">
-      {/* Hero Section */}
-      <section className="py-16 sm:py-24 px-4 bg-secondary text-secondary-foreground">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-balance">
-              Support Our Mission
-            </h1>
-            <p className="text-lg opacity-90">
-              Your generosity enables us to do the works of Jesus Christ in our community
-            </p>
+    <div className="w-full bg-background">
+      {/* <section className="relative overflow-hidden px-4 py-16 text-white sm:py-24">
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(2,95,171,1),rgba(15,23,42,0.96)_55%,rgba(235,95,39,1))]" />
+        <div className="container relative z-10 mx-auto max-w-5xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur-sm">
+            Church Giving
           </div>
+          <h1 className="mt-5 text-4xl font-bold text-balance sm:text-5xl">
+            Fill in your giving details
+          </h1>
+          <p className="mx-auto mt-4 max-w-3xl text-lg leading-8 text-white/80">
+            Complete the form below to prepare your church giving through mobile
+            money, credit card, or PayPal.
+          </p>
         </div>
-      </section>
+      </section> */}
 
-      {/* Main Content */}
-      <section className="py-16 sm:py-24 px-4 bg-background">
-        <div className="container mx-auto max-w-4xl space-y-12">
-          {/* Why Give */}
-          <div className="space-y-4">
-            <h2 className="text-3xl font-bold text-foreground">Why Give to Our Church?</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              When you give to Impact For Christ Church In Rwanda, you're investing in a mission that transforms lives and strengthens our community. Every gift supports our ministries, programs, and outreach efforts that make a real difference.
-            </p>
-          </div>
+      <section className="px-4 py-16 sm:py-20">
+        <div className="container mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1.1fr)_360px]">
+          <Card className="border-border/70 shadow-sm">
+            <CardHeader className="space-y-3">
+              <CardTitle className="text-3xl">Giving Form</CardTitle>
+              <CardDescription className="text-base leading-7 text-muted-foreground">
+                Enter your details, choose how you want to give, then set the
+                amount and currency.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form className="space-y-6">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="full-name">Full Name</Label>
+                    <Input id="full-name" placeholder="Enter your full name" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email-address">Email</Label>
+                    <Input
+                      id="email-address"
+                      type="email"
+                      placeholder="Enter your email address"
+                    />
+                  </div>
+                </div>
 
-          {/* Impact of Giving */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {[
-              { amount: '$10', impact: 'Provides a meal for a hungry child' },
-              { amount: '$25', impact: 'Funds school supplies for a student' },
-              { amount: '$50', impact: 'Supports a family in need' },
-              { amount: '$100+', impact: 'Enables major program initiatives' }
-            ].map((item, index) => (
-              <Card key={index} className="text-center hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-primary">{item.amount}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">{item.impact}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                <div className="space-y-2">
+                  <Label htmlFor="giving-purpose">Giving Option</Label>
+                  <select
+                    id="giving-purpose"
+                    className="flex h-11 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20"
+                    defaultValue=""
+                  >
+                    <option value="" disabled>
+                      Select a giving option
+                    </option>
+                    {givingPurposes.map((purpose) => (
+                      <option key={purpose} value={purpose}>
+                        {purpose}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-          {/* Ways to Give */}
+                <div className="space-y-4">
+                  <Label>Payment Type</Label>
+                  <div className="grid gap-3 rounded-3xl bg-slate-100 p-2 sm:grid-cols-2">
+                    {[
+                      {
+                        value: 'mobile-money' as PaymentCategory,
+                        title: 'Mobile Money',
+                        description: 'MTN/Airtel Rwanda',
+                      },
+                      {
+                        value: 'credit-card' as PaymentCategory,
+                        title: 'Credit Card',
+                        description: 'Card payment',
+                      },
+                    ].map((option) => (
+                      <label
+                        key={option.value}
+                        className={`relative flex cursor-pointer flex-col rounded-2xl px-4 py-4 text-center transition ${
+                          paymentCategory === option.value
+                            ? 'bg-white text-slate-950 shadow-sm'
+                            : 'text-slate-600 hover:bg-white/70'
+                        }`}
+                      >
+                        <span className="text-2xl leading-none text-primary/80">
+                          {paymentCategory === option.value ? (
+                            <CheckCircle2 className="absolute right-3 top-3 h-5 w-5 text-sky-500" />
+                          ) : null}
+                        </span>
+                        <span className="text-xl font-semibold leading-none">
+                          {option.title}
+                        </span>
+                        <span className="mt-2 text-sm text-slate-600">
+                          {option.description}
+                        </span>
+                        <input
+                          type="radio"
+                          name="payment-category"
+                          value={option.value}
+                          checked={paymentCategory === option.value}
+                          onChange={() => setPaymentCategory(option.value)}
+                          className="sr-only"
+                        />
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {paymentCategory === 'mobile-money' ? (
+                  <div className="space-y-2">
+                    <Label htmlFor="phone-number">Phone Number</Label>
+                    <Input
+                      id="phone-number"
+                      type="tel"
+                      placeholder="Enter your mobile money phone number"
+                    />
+                  </div>
+                ) : null}
+
+                <div className="grid gap-6 sm:grid-cols-[minmax(0,1fr)_160px]">
+                  <div className="space-y-2">
+                    <Label htmlFor="amount">Amount</Label>
+                    <Input id="amount" placeholder="Enter amount" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="currency">Currency</Label>
+                    <select
+                      id="currency"
+                      defaultValue="RWF"
+                      className="flex h-11 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20"
+                    >
+                      {currencies.map((currency) => (
+                        <option key={currency} value={currency}>
+                          {currency}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <Button size="lg" className="w-full bg-primary hover:bg-primary/90">
+                  Continue Giving
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+
           <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-foreground">Ways to Give</h2>
+            <Card className="border-primary/20 bg-primary/5 shadow-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-3 text-2xl">
+                  <ShieldCheck className="h-6 w-6 text-primary" />
+                  Church Giving Info
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm leading-7 text-muted-foreground">
+                <div className="rounded-2xl border border-primary/15 bg-white p-4">
+                  <p className="font-medium text-foreground">Church Offering Code 1</p>
+                  <p className="mt-2 text-lg font-semibold text-foreground">
+                    *182*8*1*512347#
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    IMPACT FOR CHRIST CHURCH IN RWANDA
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-primary/15 bg-white p-4">
+                  <p className="font-medium text-foreground">Church Offering Code 2</p>
+                  <p className="mt-2 text-lg font-semibold text-foreground">
+                    *182*8*1*100545#
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    IMPACT FOR CHRIST CHURCH IN RWANDA
+                  </p>
+                </div>
+                <p>
+                  Use the form to choose your giving option and preferred payment
+                  method before completing the payment.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl">Accepted Methods</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm leading-7 text-muted-foreground">
+                <div className="flex items-start gap-3">
+                  <Smartphone className="mt-1 h-5 w-5 text-primary" />
+                  <div>
+                    <p className="font-medium text-foreground">Mobile Money</p>
+                    <p>Phone number required for mobile money giving</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CreditCard className="mt-1 h-5 w-5 text-primary" />
+                  <div>
+                    <p className="font-medium text-foreground">Credit Card</p>
+                    <p>No extra payment field is needed here</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <HandCoins className="mt-1 h-5 w-5 text-primary" />
+                  <div>
+                    <p className="font-medium text-foreground">Giving Support</p>
+                    <p>impactforchristrwanda@gmail.com</p>
+                  </div>
+                </div>
+                <Button asChild variant="outline" className="w-full">
+                  <Link href="/contact">Contact Church Office</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Online Giving */}
-              <Card className="hover:shadow-lg transition-shadow border-primary/20">
-                <CardHeader>
-                  <Zap className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Online Giving</CardTitle>
-                  <CardDescription>Fast and secure online donations</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground">
-                    Give securely online through our payment platform. One-time or recurring gifts available.
-                  </p>
-                  <div className="space-y-2">
-                    <Button asChild className="w-full bg-primary hover:bg-primary/90">
-                      <Link href="/give/online">Give Online Now</Link>
-                    </Button>
-                    <p className="text-xs text-muted-foreground text-center">Secure and encrypted</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Mobile Pay */}
-              <Card className="hover:shadow-lg transition-shadow border-primary/20">
-                <CardHeader>
-                  <Heart className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Mobile Money</CardTitle>
-                  <CardDescription>Give via mobile payment</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground">
-                    Send gifts through mobile money platforms for easy, convenient giving anytime, anywhere.
-                  </p>
-                  <div className="space-y-2">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="outline" className="w-full">
-                          Get Mobile Details
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-xl">
-                        <DialogHeader>
-                          <DialogTitle>Mobile Money Details</DialogTitle>
-                          <DialogDescription>
-                            Use the Operation Joseph Rwanda mobile money option below.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="space-y-4 rounded-2xl border border-border/70 bg-muted/40 p-5">
-                          <div>
-                            <p className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                              Mobile Money
-                            </p>
-                            <p className="mt-2 text-lg font-semibold text-foreground">
-                              *182*8*1*100546#
-                            </p>
-                            <p className="mt-1 text-sm text-muted-foreground">
-                              Operation Joseph C Ltd
-                            </p>
-                          </div>
-                          <div className="text-sm leading-7 text-muted-foreground">
-                            <p>For questions or confirmation, contact:</p>
-                            <p className="mt-1 font-medium text-foreground">
-                              operationjosephrwanda@gmail.com
-                            </p>
-                            <p className="font-medium text-foreground">
-                              +250 788 304 392
-                            </p>
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Bank Transfer */}
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <TrendingUp className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Bank Transfer</CardTitle>
-                  <CardDescription>Direct bank donations</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground">
-                    Make one-time or recurring donations directly from your bank account.
-                  </p>
-                  <div className="space-y-2">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="outline" className="w-full">
-                          Request Bank Details
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-2xl">
-                        <DialogHeader>
-                          <DialogTitle>Bank Transfer Details</DialogTitle>
-                          <DialogDescription>
-                            Use the Operation Joseph Rwanda banking details below for giving.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="grid gap-4 sm:grid-cols-2">
-                          <div className="rounded-2xl border border-border/70 bg-muted/40 p-5">
-                            <p className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                              Bank
-                            </p>
-                            <p className="mt-2 text-lg font-semibold text-foreground">
-                              BPR Bank Rwanda
-                            </p>
-                            <p className="mt-4 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                              Account Name
-                            </p>
-                            <p className="mt-2 text-base font-medium text-foreground">
-                              Operation Joseph
-                            </p>
-                            <p className="mt-4 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                              SWIFT Code
-                            </p>
-                            <p className="mt-2 text-base font-medium text-foreground">
-                              BPRWRWRW
-                            </p>
-                          </div>
-                          <div className="rounded-2xl border border-border/70 bg-muted/40 p-5">
-                            <p className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                              USD Account
-                            </p>
-                            <p className="mt-2 text-lg font-semibold text-foreground">
-                              4492634940
-                            </p>
-                            <p className="mt-4 text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                              FRW Account
-                            </p>
-                            <p className="mt-2 text-lg font-semibold text-foreground">
-                              4492634916
-                            </p>
-                          </div>
-                        </div>
-                        <div className="rounded-2xl border border-border/70 bg-background p-4 text-sm leading-7 text-muted-foreground">
-                          <p>For giving confirmation or help, contact:</p>
-                          <p className="mt-1 font-medium text-foreground">
-                            operationjosephrwanda@gmail.com
-                          </p>
-                          <p className="font-medium text-foreground">
-                            +250 788 304 392
-                          </p>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* In-Church Giving */}
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <Gift className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">In-Church Giving</CardTitle>
-                  <CardDescription>Give during worship services</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground">
-                    Tithes and offerings are collected during our Sunday worship services.
-                  </p>
-                  <div className="space-y-2">
-                    <Button asChild variant="outline" className="w-full">
-                      <Link href="/events">Visit Our Services</Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-
-          {/* FAQ */}
-          <div className="space-y-6 border-t border-border pt-12">
-            <h2 className="text-3xl font-bold text-foreground">Giving FAQs</h2>
-            
-            <div className="space-y-4">
-              {[
-                {
-                  question: 'Is my donation secure?',
-                  answer: 'Yes! All online donations are processed through secure, encrypted payment systems that protect your personal information.'
-                },
-                {
-                  question: 'Can I give anonymously?',
-                  answer: 'Yes, you may give anonymously during services or request to remain anonymous for online gifts.'
-                },
-                {
-                  question: 'What happens if I need to cancel recurring giving?',
-                  answer: 'You can update or cancel recurring gifts anytime through your online account or by contacting our office.'
-                },
-                {
-                  question: 'Can I specify where my donation goes?',
-                  answer: 'Yes! You can designate your gift for specific projects, programs, or ministries when you give.'
-                }
-              ].map((item, index) => (
-                <Card key={index}>
-                  <CardHeader>
-                    <CardTitle className="text-lg">{item.question}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{item.answer}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="bg-secondary text-secondary-foreground rounded-lg p-8 text-center space-y-4 border border-secondary/50">
-            <h3 className="text-2xl font-bold">Ready to Make a Difference?</h3>
-            <p className="opacity-90 max-w-2xl mx-auto">
-              Your generosity helps us fulfill our mission of doing the works of Jesus Christ. Thank you for supporting Impact For Christ Church In Rwanda!
-            </p>
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 mt-4">
-              <Link href="/give/online">Give Online Now</Link>
-            </Button>
           </div>
         </div>
       </section>

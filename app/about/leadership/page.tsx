@@ -115,7 +115,7 @@ export default function AboutLeadership() {
             <div className="grid lg:grid-cols-[340px_minmax(0,1fr)]">
               <div className="relative min-h-[340px] overflow-hidden bg-slate-100">
                 <Image
-                  src="/prophet-philip-banda.jpeg"
+                  src="/Prophet Philip Banda.png"
                   alt="Prophet Philip Banda"
                   fill
                   className="object-cover object-top"

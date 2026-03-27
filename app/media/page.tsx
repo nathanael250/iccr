@@ -1,273 +1,247 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useState } from 'react'
+
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { Play, Podcast, Image as ImageIcon, FileText } from 'lucide-react'
+import { Camera, Images, X } from 'lucide-react'
+
+const mediaModules = import.meta.glob('/src/assets/media/*.{jpeg,jpg,png,JPEG,JPG,PNG}', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>
+
+const galleryImages = Object.entries(mediaModules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([path, src], index) => ({
+    id: index + 1,
+    src,
+    alt: `Impact For Christ Church media photo ${index + 1}`,
+    title: `Gallery Photo ${String(index + 1).padStart(2, '0')}`,
+    featured: index === 0,
+    tall: [0, 2, 5, 8, 11, 15, 20, 23].includes(index),
+  }))
 
 export const metadata = {
   title: 'Media - Impact For Christ Church In Rwanda',
-  description: 'Access sermons, messages, and media content from Impact For Christ Church In Rwanda.',
+  description:
+    'Browse the church media gallery from Impact For Christ Church In Rwanda.',
 }
 
 export default function Media() {
+  const [selectedImage, setSelectedImage] = useState<(typeof galleryImages)[number] | null>(
+    null,
+  )
+
+  const featuredImages = galleryImages.slice(0, 3)
+  const gridImages = galleryImages.slice(3)
+
   return (
-    <div className="w-full">
-      {/* Hero Section */}
-      <section className="py-16 sm:py-24 px-4 bg-secondary text-secondary-foreground">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-balance">
-              Church Media
-            </h1>
-            <p className="text-lg opacity-90">
-              Watch, listen, and access content from our church services and programs
-            </p>
+    <div className="w-full bg-background">
+      <section className="relative overflow-hidden px-4 py-16 text-white sm:py-20">
+        <img
+          src="/image.png"
+          alt="Impact For Christ Church worship background"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-slate-950/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(2,95,171,0.55),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(235,95,39,0.35),transparent_28%)]" />
+
+        <div className="container relative z-10 mx-auto max-w-5xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur-sm">
+            <Camera className="h-4 w-4 text-primary" />
+            Church Gallery
+          </div>
+          <h1 className="mt-5 text-4xl font-bold text-balance sm:text-5xl">
+            Moments of worship, fellowship, and ministry
+          </h1>
+          <p className="mx-auto mt-4 max-w-3xl text-lg leading-8 text-white/80">
+            Explore the media gallery and see highlights from church services,
+            gatherings, outreach, and the life of Impact For Christ Church In
+            Rwanda.
+          </p>
+        </div>
+      </section>
+
+      <section className="px-4 py-16 sm:py-20">
+        <div className="container mx-auto max-w-6xl space-y-12">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+            <div className="rounded-[30px] border border-border/70 bg-card p-3 shadow-sm">
+              <button
+                type="button"
+                onClick={() => setSelectedImage(featuredImages[0])}
+                className="group relative block h-full min-h-[420px] w-full overflow-hidden rounded-[24px]"
+              >
+                <img
+                  src={featuredImages[0].src}
+                  alt={featuredImages[0].alt}
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.05),rgba(15,23,42,0.7))]" />
+                <div className="absolute inset-x-5 bottom-5 text-left text-white">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
+                    Featured Moment
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold text-balance">
+                    Worship and church life captured in one frame
+                  </p>
+                </div>
+              </button>
+            </div>
+
+            <div className="grid gap-6">
+              {featuredImages.slice(1).map((image) => (
+                <button
+                  key={image.id}
+                  type="button"
+                  onClick={() => setSelectedImage(image)}
+                  className="group relative min-h-[198px] overflow-hidden rounded-[28px] border border-border/70 bg-card p-3 text-left shadow-sm"
+                >
+                  <div className="h-full overflow-hidden rounded-[22px]">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="pointer-events-none absolute inset-3 rounded-[22px] bg-[linear-gradient(180deg,rgba(15,23,42,0.04),rgba(15,23,42,0.58))]" />
+                  <div className="absolute inset-x-7 bottom-7 text-white">
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">
+                      ICCR Media
+                    </p>
+                    <p className="mt-1 text-lg font-semibold">Church gallery highlight</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4 rounded-[30px] border border-border/70 bg-card px-6 py-6 shadow-sm sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                <span className="h-px w-6 bg-primary" />
+                Gallery Collection
+              </div>
+              <h2 className="mt-3 text-3xl font-bold text-foreground sm:text-4xl">
+                Photo Gallery
+              </h2>
+              <p className="mt-3 max-w-2xl text-base leading-7 text-muted-foreground">
+                A visual collection from worship services, ministry gatherings,
+                and moments shared by the church family.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-primary/15 bg-primary/5 px-5 py-4 text-sm leading-7 text-muted-foreground">
+              <p className="font-semibold text-foreground">{galleryImages.length} photos</p>
+              <p>Click any image to view it larger.</p>
+            </div>
+          </div>
+
+          <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 xl:columns-4">
+            {gridImages.map((image) => (
+              <button
+                key={image.id}
+                type="button"
+                onClick={() => setSelectedImage(image)}
+                className="group mb-5 block w-full break-inside-avoid overflow-hidden rounded-[26px] border border-border/70 bg-card p-3 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <div
+                  className={`overflow-hidden rounded-[20px] ${
+                    image.tall ? 'aspect-[4/5]' : 'aspect-[16/10]'
+                  }`}
+                >
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="px-2 pb-1 pt-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                    ICCR Media
+                  </p>
+                  <p className="mt-1 text-base font-semibold text-foreground">
+                    {image.title}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          <div className="rounded-[32px] bg-[#111827] px-6 py-10 text-white sm:px-10 sm:py-12">
+            <div className="mx-auto max-w-3xl text-center">
+              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                <Images className="h-4 w-4" />
+                More Moments
+              </div>
+              <h2 className="mt-4 text-3xl font-bold text-balance sm:text-4xl">
+                Want to share or request church media?
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-white/75">
+                If you need official photos for church communication or want to
+                send media from an event, reach out to the church team.
+              </p>
+              <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+                <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+                  <Link href="/contact">Contact the Church</Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="border-white/15 bg-transparent text-white hover:bg-white hover:text-foreground"
+                >
+                  <Link href="/events">View Events</Link>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="py-16 sm:py-24 px-4 bg-background">
-        <div className="container mx-auto max-w-6xl space-y-16">
-          {/* Videos Section */}
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-3xl font-bold text-foreground mb-2">Sermons & Messages</h2>
-                <p className="text-muted-foreground">Watch our latest sermon videos and messages</p>
+      {selectedImage ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 px-4 py-8">
+          <button
+            type="button"
+            onClick={() => setSelectedImage(null)}
+            className="absolute right-4 top-4 rounded-full border border-white/15 bg-white/10 p-2 text-white transition hover:bg-white/20"
+            aria-label="Close gallery preview"
+          >
+            <X className="h-5 w-5" />
+          </button>
+
+          <div className="w-full max-w-6xl overflow-hidden rounded-[28px] border border-white/10 bg-slate-950 shadow-2xl">
+            <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_320px]">
+              <div className="bg-black">
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
+                  className="max-h-[78vh] w-full object-contain"
+                />
               </div>
-              <Button asChild variant="outline" size="sm">
-                <Link href="#videos">View All</Link>
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
-                <Card key={item} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="relative bg-card/50 h-40 flex items-center justify-center group cursor-pointer">
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                      <Play className="w-12 h-12 text-primary-foreground opacity-80 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                    <span className="text-muted-foreground">Video Thumbnail</span>
-                  </div>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Sunday Sermon</CardTitle>
-                    <CardDescription>March 16, 2026</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      "Living by Faith" - A powerful message about trusting God in all circumstances.
-                    </p>
-                    <Button asChild size="sm" className="w-full">
-                      <Link href="#">Watch Now</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          {/* Audio/Podcasts Section */}
-          <div className="space-y-6 border-t border-border pt-16">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-3xl font-bold text-foreground mb-2">Audio Messages</h2>
-                <p className="text-muted-foreground">Listen to sermons while commuting or working</p>
-              </div>
-              <Button asChild variant="outline" size="sm">
-                <Link href="#audio">View All</Link>
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[1, 2, 3, 4].map((item) => (
-                <Card key={item} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-lg bg-primary/10">
-                        <Podcast className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-lg">Pastor's Message</CardTitle>
-                        <CardDescription>March 15, 2026</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground">
-                      "The Power of Prayer" - Exploring how prayer transforms our lives and relationships.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button asChild size="sm" className="flex-1">
-                        <Link href="#">Listen</Link>
-                      </Button>
-                      <Button asChild variant="outline" size="sm" className="flex-1">
-                        <Link href="#">Download</Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          {/* Gallery Section */}
-          <div className="space-y-6 border-t border-border pt-16">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-3xl font-bold text-foreground mb-2">Photo Gallery</h2>
-                <p className="text-muted-foreground">Memories from our events and activities</p>
-              </div>
-              <Button asChild variant="outline" size="sm">
-                <Link href="#gallery">View All</Link>
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-                <div key={item} className="bg-card rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow cursor-pointer h-40 flex items-center justify-center">
-                  <div className="text-center">
-                    <ImageIcon className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                    <p className="text-xs text-muted-foreground">Event Photo</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Resources Section */}
-          <div className="space-y-6 border-t border-border pt-16">
-            <div>
-              <h2 className="text-3xl font-bold text-foreground mb-2">Resources & Documents</h2>
-              <p className="text-muted-foreground">Study materials, articles, and helpful resources</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  title: 'Bible Study Guides',
-                  description: 'Downloadable guides for in-depth Bible study on key topics',
-                  icon: FileText
-                },
-                {
-                  title: 'Sermon Notes',
-                  description: 'Detailed notes and outlines from recent sermons',
-                  icon: FileText
-                },
-                {
-                  title: 'Prayer Devotionals',
-                  description: 'Daily devotional guides for prayer and reflection',
-                  icon: FileText
-                },
-                {
-                  title: 'Ministry Newsletters',
-                  description: 'Monthly newsletters with updates and announcements',
-                  icon: FileText
-                }
-              ].map((resource, index) => {
-                const Icon = resource.icon
-                return (
-                  <Card key={index} className="hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 rounded-lg bg-primary/10">
-                          <Icon className="w-6 h-6 text-primary" />
-                        </div>
-                        <CardTitle className="text-lg">{resource.title}</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <p className="text-muted-foreground text-sm">{resource.description}</p>
-                      <Button asChild variant="outline" size="sm" className="w-full">
-                        <Link href="#">Download</Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Live Streaming Section */}
-          <div className="space-y-6 border-t border-border pt-16 bg-card rounded-lg p-8 border border-border/50">
-            <div>
-              <h2 className="text-3xl font-bold text-foreground mb-2">Live Stream Services</h2>
-              <p className="text-muted-foreground">Join us online for our Sunday worship services</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <div className="bg-card-foreground/10 rounded-lg h-64 flex items-center justify-center mb-4 border border-border">
-                  <div className="text-center">
-                    <Play className="w-16 h-16 text-primary mx-auto mb-3" />
-                    <p className="text-muted-foreground">Live Stream Embed</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4">
+              <div className="flex flex-col justify-between gap-6 p-6 text-white">
                 <div>
-                  <h3 className="font-bold text-lg text-foreground mb-2">Sunday Worship</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Join us online every Sunday at 9:00 AM for our main worship service. Available on multiple platforms.
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                    ICCR Gallery
+                  </p>
+                  <h3 className="mt-3 text-2xl font-semibold">
+                    {selectedImage.title}
+                  </h3>
+                  <p className="mt-4 text-sm leading-7 text-white/70">
+                    A captured moment from the life and ministry of Impact For
+                    Christ Church In Rwanda.
                   </p>
                 </div>
 
-                <div className="space-y-2">
-                  <p className="font-semibold text-foreground">Watch On:</p>
-                  <div className="space-y-2">
-                    <Button asChild variant="outline" className="w-full justify-start">
-                      <Link href="#">YouTube</Link>
-                    </Button>
-                    <Button asChild variant="outline" className="w-full justify-start">
-                      <Link href="#">Facebook</Link>
-                    </Button>
-                    <Button asChild variant="outline" className="w-full justify-start">
-                      <Link href="#">Website Live Stream</Link>
-                    </Button>
-                  </div>
-                </div>
+                <Button
+                  type="button"
+                  onClick={() => setSelectedImage(null)}
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                >
+                  Close Preview
+                </Button>
               </div>
             </div>
           </div>
-
-          {/* Subscribe Section */}
-          <div className="space-y-6 border-t border-border pt-16">
-            <h2 className="text-3xl font-bold text-foreground">Stay Updated</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  title: 'YouTube Channel',
-                  description: 'Subscribe to our YouTube channel for new videos and live streams',
-                  cta: 'Subscribe'
-                },
-                {
-                  title: 'Podcast',
-                  description: 'Available on Spotify, Apple Podcasts, and other platforms',
-                  cta: 'Listen'
-                },
-                {
-                  title: 'Email Updates',
-                  description: 'Get weekly updates delivered to your inbox',
-                  cta: 'Sign Up'
-                }
-              ].map((item, index) => (
-                <Card key={index} className="text-center hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <CardTitle className="text-lg">{item.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-muted-foreground text-sm">{item.description}</p>
-                    <Button asChild size="sm" className="w-full">
-                      <Link href="#">{item.cta}</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
         </div>
-      </section>
+      ) : null}
     </div>
   )
 }

@@ -1,7 +1,8 @@
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'react-router-dom'
-import { ArrowLeft, CheckCircle2, MapPin } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, ChevronLeft, ChevronRight, Expand, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -10,6 +11,9 @@ import { getProjectBySlug } from '@/app/projects/data'
 export default function ProjectDetailPage() {
   const { slug = '' } = useParams()
   const project = getProjectBySlug(slug)
+  const galleryImages = project?.images?.length ? project.images : project ? [project.image] : []
+  const [activeImageIndex, setActiveImageIndex] = useState(0)
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
 
   if (!project) {
     return (
@@ -29,33 +33,105 @@ export default function ProjectDetailPage() {
 
   return (
     <div className="w-full">
-      <section className="relative overflow-hidden px-4 py-16 text-white sm:py-24">
-        <Image src={project.image} alt={project.name} fill className="object-cover object-center" />
-        <div className="absolute inset-0 bg-slate-950/72" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(2,95,171,0.48),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(235,95,39,0.28),transparent_30%)]" />
-
-        <div className="container relative z-10 mx-auto max-w-5xl">
-          <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-white/80 transition hover:text-white">
+      <section className="bg-background px-4 py-12 sm:py-16">
+        <div className="container mx-auto max-w-6xl">
+          <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground">
             <ArrowLeft className="h-4 w-4" />
             Back to Projects
           </Link>
 
-          <div className="mt-8 max-w-3xl space-y-4">
-            <div className="flex flex-wrap gap-2">
-              <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-sm font-medium backdrop-blur-sm">
-                {project.category}
-              </span>
-              <span className="rounded-full bg-primary px-3 py-1 text-sm font-medium text-primary-foreground">
-                {project.status}
-              </span>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                Project Gallery
+              </p>
+              <h1 className="mt-3 text-3xl font-bold text-foreground sm:text-4xl">
+                {project.name}
+              </h1>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Click any image to view it full size.
+            </p>
+          </div>
+
+          <div className="mt-8 mx-auto max-w-4xl">
+            <button
+              type="button"
+              onClick={() => setSelectedImageIndex(activeImageIndex)}
+              className="group relative block w-full overflow-hidden rounded-[32px] border border-border/70 bg-card shadow-sm"
+              aria-label={`Open ${project.name} image ${activeImageIndex + 1} full size`}
+            >
+              <div className="relative aspect-[16/10] sm:aspect-[16/9]">
+                <Image
+                  src={galleryImages[activeImageIndex]}
+                  alt={`${project.name} image ${activeImageIndex + 1}`}
+                  fill
+                  className="object-cover transition duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.04),rgba(15,23,42,0.64))]" />
+                <div className="absolute inset-x-5 bottom-5 flex items-end justify-between gap-4 text-white">
+                  <div className="text-left">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+                      Project Image
+                    </p>
+                    <p className="mt-2 text-lg font-semibold sm:text-xl">
+                      {project.name}
+                    </p>
+                  </div>
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm">
+                    <Expand className="h-4 w-4" />
+                  </span>
+                </div>
+              </div>
+            </button>
+
+            {galleryImages.length > 1 ? (
+              <div className="mt-4 flex items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setActiveImageIndex(
+                      (current) => (current - 1 + galleryImages.length) % galleryImages.length,
+                    )
+                  }
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background text-foreground transition hover:border-primary hover:text-primary"
+                  aria-label="Show previous project image"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setActiveImageIndex((current) => (current + 1) % galleryImages.length)
+                  }
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background text-foreground transition hover:border-primary hover:text-primary"
+                  aria-label="Show next project image"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+            ) : null}
+
+            <div className="mt-5 flex items-center justify-center gap-3">
+              {galleryImages.map((imageSrc, index) => (
+                <button
+                  key={`${imageSrc}-dot`}
+                  type="button"
+                  onClick={() => setActiveImageIndex(index)}
+                  className={`h-3 rounded-full transition ${
+                    activeImageIndex === index
+                      ? 'w-8 bg-primary'
+                      : 'w-3 bg-border hover:bg-primary/60'
+                  }`}
+                  aria-label={`Show project image ${index + 1}`}
+                />
+              ))}
             </div>
 
-            <h1 className="text-4xl font-bold text-balance sm:text-5xl">{project.name}</h1>
-            <p className="flex items-center gap-2 text-white/80">
-              <MapPin className="h-4 w-4" />
-              {project.location}
+            <p className="mt-4 text-center text-sm text-muted-foreground">
+              Image {activeImageIndex + 1} of {galleryImages.length}
             </p>
-            <p className="text-lg leading-8 text-white/85">{project.summary}</p>
           </div>
         </div>
       </section>
@@ -139,11 +215,11 @@ export default function ProjectDetailPage() {
                   If you would like to partner, volunteer, or give toward this work, contact the church and let us know how you want to be involved.
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
-                  <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-                    <Link href="/contact">Contact The Church</Link>
+                  <Button asChild variant="outline" className="bg-primary text-primary-foreground hover:bg-primary/90">
+                    <Link href="/give">Support This Project</Link>
                   </Button>
-                  <Button asChild variant="outline" className="border-white/20 bg-transparent text-white hover:bg-white hover:text-foreground">
-                    <Link href="/charity">Support Our Work</Link>
+                  <Button asChild className="border-white/20 bg-transparent text-white hover:bg-white hover:text-foreground">
+                    <Link href="/contact">Contact The Church</Link>
                   </Button>
                 </div>
               </div>
@@ -151,6 +227,88 @@ export default function ProjectDetailPage() {
           </div>
         </div>
       </section>
+
+      {selectedImageIndex !== null ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/92 px-4 py-6"
+          onClick={() => setSelectedImageIndex(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setSelectedImageIndex(null)}
+            className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition hover:bg-white/20"
+            aria-label="Close full size image"
+          >
+            <X className="h-5 w-5" />
+          </button>
+
+          {galleryImages.length > 1 ? (
+            <>
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  setSelectedImageIndex((current) => {
+                    const nextIndex =
+                      current === null
+                        ? 0
+                        : (current - 1 + galleryImages.length) % galleryImages.length
+
+                    setActiveImageIndex(nextIndex)
+                    return nextIndex
+                  })
+                }}
+                className="absolute left-4 top-1/2 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition hover:bg-white/20"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  setSelectedImageIndex((current) => {
+                    const nextIndex =
+                      current === null ? 0 : (current + 1) % galleryImages.length
+
+                    setActiveImageIndex(nextIndex)
+                    return nextIndex
+                  })
+                }}
+                className="absolute right-4 top-1/2 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition hover:bg-white/20"
+                aria-label="Next image"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </>
+          ) : null}
+
+          <div
+            className="w-full max-w-6xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="overflow-hidden rounded-[30px] border border-white/10 bg-black shadow-2xl">
+              <img
+                src={galleryImages[selectedImageIndex]}
+                alt={`${project.name} full size image ${selectedImageIndex + 1}`}
+                className="max-h-[86vh] w-full object-contain"
+              />
+            </div>
+            <div className="mt-4 flex items-center justify-between gap-4 text-sm text-white/75">
+              <p>
+                {project.name} image {selectedImageIndex + 1} of {galleryImages.length}
+              </p>
+              <button
+                type="button"
+                onClick={() => setSelectedImageIndex(null)}
+                className="text-white transition hover:text-primary"
+              >
+                Close Preview
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }

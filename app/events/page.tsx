@@ -20,7 +20,7 @@ export const metadata = {
 const regularEvents = [
   {
     name: 'Sunday Worship Service',
-    time: '9:00 AM - 11:00 AM',
+    time: '7:00 AM - 3:00 PM',
     day: 'Every Sunday',
     location: 'Main Sanctuary',
     description:
@@ -179,7 +179,7 @@ export default function Events() {
               <div className="mt-5 space-y-3">
                 {[
                   { icon: CalendarDays, text: 'Every Sunday' },
-                  { icon: Clock3, text: '9:00 AM - 11:00 AM' },
+                  { icon: Clock3, text: '7:00 AM - 3:00 PM' },
                   { icon: MapPin, text: 'Main Sanctuary' },
                 ].map(({ icon: Icon, text }) => (
                   <div key={text} className="flex items-center gap-3 text-white/90">

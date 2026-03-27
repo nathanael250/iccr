@@ -4,6 +4,9 @@ import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import RootLayout from '@/app/layout'
 import About from '@/app/about/page'
 import AboutLeadership from '@/app/about/leadership/page'
+import Admin from '@/app/admin/page'
+import AdminDashboard from '@/app/admin/dashboard/page'
+import AdminLogin from '@/app/admin/login/page'
 import Charity from '@/app/charity/page'
 import Contact from '@/app/contact/page'
 import Events from '@/app/events/page'
@@ -61,6 +64,9 @@ export default function App() {
       <RootLayout>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/about" element={<About />} />
           <Route path="/about/leadership" element={<AboutLeadership />} />
           <Route path="/charity" element={<Charity />} />

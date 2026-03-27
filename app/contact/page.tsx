@@ -6,6 +6,15 @@ import { Input } from '@/components/ui/input'
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react'
 import { useState } from 'react'
 
+const churchEmail = 'impactforchristrwanda@gmail.com'
+const churchMapUrl = 'https://maps.app.goo.gl/31ZQ2W4oii84JNBE8?g_st=iw'
+const churchMapEmbedUrl =
+  'https://www.google.com/maps?q=Impact%20For%20Christ%20Church%20In%20Rwanda%2C%20Kigali%2C%20Rwanda&z=15&output=embed'
+const churchPhones = [
+  { label: '0782201563', href: 'tel:+250782201563' },
+  { label: '0788681038', href: 'tel:+250788681038' },
+]
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
@@ -88,10 +97,12 @@ export default function Contact() {
                   <Phone className="w-6 h-6 text-primary mb-2" />
                   <CardTitle className="text-lg">Phone</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <a href="tel:+250" className="text-primary hover:underline font-medium">
-                    +250 XXX XXX XXX
-                  </a>
+                <CardContent className="space-y-1">
+                  {churchPhones.map((phone) => (
+                    <a key={phone.label} href={phone.href} className="block text-primary hover:underline font-medium">
+                      {phone.label}
+                    </a>
+                  ))}
                   <p className="text-xs text-muted-foreground mt-2">Monday - Friday, 9:00 AM - 5:00 PM</p>
                 </CardContent>
               </Card>
@@ -102,8 +113,8 @@ export default function Contact() {
                   <CardTitle className="text-lg">Email</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <a href="mailto:info@ifcmrwanda.org" className="text-primary hover:underline font-medium">
-                    info@ifcmrwanda.org
+                  <a href={`mailto:${churchEmail}`} className="text-primary hover:underline font-medium">
+                    {churchEmail}
                   </a>
                   <p className="text-xs text-muted-foreground mt-2">We typically respond within 24 hours</p>
                 </CardContent>
@@ -117,7 +128,7 @@ export default function Contact() {
                 <CardContent className="space-y-2">
                   <div>
                     <p className="font-medium text-foreground">Sunday</p>
-                    <p className="text-sm text-muted-foreground">9:00 AM - 11:00 AM</p>
+                    <p className="text-sm text-muted-foreground">7:00 AM - 3:00 PM</p>
                   </div>
                   <div>
                     <p className="font-medium text-foreground">Office Hours</p>
@@ -180,7 +191,7 @@ export default function Contact() {
                         id="phone"
                         name="phone"
                         type="tel"
-                        placeholder="+250 XXX XXX XXX"
+                        placeholder="0782201563"
                         value={formData.phone}
                         onChange={handleChange}
                         className="w-full"
@@ -260,65 +271,35 @@ export default function Contact() {
           {/* Map Placeholder */}
           <div className="space-y-4 mb-12">
             <h2 className="text-2xl font-bold text-foreground">Find Us</h2>
-            <div className="bg-card rounded-lg overflow-hidden border border-border h-96 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-                <p className="text-muted-foreground">Map will display our location</p>
+            <div className="bg-card rounded-lg overflow-hidden border border-border min-h-96">
+              <div className="grid min-h-96 lg:grid-cols-[minmax(0,1.4fr)_320px]">
+                <iframe
+                  title="Impact For Christ Church In Rwanda location map"
+                  src={churchMapEmbedUrl}
+                  className="h-96 w-full border-0 lg:h-full"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+                <div className="flex flex-col justify-center bg-[radial-gradient(circle_at_top,rgba(2,95,171,0.18),transparent_35%),linear-gradient(135deg,rgba(235,95,39,0.08),rgba(2,95,171,0.08))] px-6 py-8">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <MapPin className="w-7 h-7" />
+                  </div>
+                  <h3 className="mt-5 text-2xl font-semibold text-foreground">
+                    Impact For Christ Church In Rwanda
+                  </h3>
+                  <p className="mt-3 text-muted-foreground">
+                    View the live map here or open the full Google Maps app for directions.
+                  </p>
+                  <Button asChild className="mt-6 bg-primary hover:bg-primary/90">
+                    <a href={churchMapUrl} target="_blank" rel="noreferrer">
+                      Open in Google Maps
+                    </a>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Departments */}
-          <div className="space-y-6 border-t border-border pt-12">
-            <h2 className="text-2xl font-bold text-foreground">Contact Our Departments</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  name: 'Pastoral Team',
-                  email: 'pastoral@ifcmrwanda.org',
-                  description: 'Spiritual guidance, counseling, and prayer requests'
-                },
-                {
-                  name: 'Events Coordination',
-                  email: 'events@ifcmrwanda.org',
-                  description: 'Questions about upcoming events and services'
-                },
-                {
-                  name: 'Youth Ministry',
-                  email: 'youth@ifcmrwanda.org',
-                  description: 'Youth programs and activities'
-                },
-                {
-                  name: 'Giving & Finance',
-                  email: 'giving@ifcmrwanda.org',
-                  description: 'Questions about donations and financial matters'
-                },
-                {
-                  name: 'Outreach & Missions',
-                  email: 'missions@ifcmrwanda.org',
-                  description: 'Volunteering opportunities and mission work'
-                },
-                {
-                  name: 'Media & Communications',
-                  email: 'media@ifcmrwanda.org',
-                  description: 'Media inquiries and press releases'
-                }
-              ].map((dept, index) => (
-                <Card key={index} className="hover:shadow-md transition-shadow">
-                  <CardHeader>
-                    <CardTitle className="text-lg">{dept.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <p className="text-sm text-muted-foreground">{dept.description}</p>
-                    <a href={`mailto:${dept.email}`} className="text-primary hover:underline font-medium text-sm">
-                      {dept.email}
-                    </a>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
 
           {/* FAQ */}
           <div className="space-y-6 border-t border-border pt-12">
@@ -338,10 +319,10 @@ export default function Contact() {
                   question: 'How can I request prayer?',
                   answer: 'You can submit a prayer request through our contact form, call us, or speak with someone before or after service.'
                 },
-                {
-                  question: 'Is childcare available?',
-                  answer: 'Yes! We offer nursery and children\'s ministry during Sunday services. Please ask at the welcome desk for more information.'
-                }
+                // {
+                //   question: 'Is childcare available?',
+                //   answer: 'Yes! We offer nursery and children\'s ministry during Sunday services. Please ask at the welcome desk for more information.'
+                // }
               ].map((item, index) => (
                 <Card key={index}>
                   <CardHeader>

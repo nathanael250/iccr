@@ -190,14 +190,24 @@ export default function Charity() {
               </p>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-2">
+            <div className="grid gap-6 lg:grid-cols-2" id="operation-joseph-giving">
               <Card className="border-primary/15 shadow-sm">
                 <CardHeader>
                   <CardTitle className="text-3xl text-primary">
-                    Giving Details
+                    Operation Joseph Giving Details
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-5 text-base leading-8 text-muted-foreground">
+                  <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4 text-sm leading-7">
+                    <p className="font-semibold text-foreground">
+                      These details are for Operation Joseph Rwanda only.
+                    </p>
+                    <p className="mt-1">
+                      Church tithes, offerings, and general church giving use
+                      separate Impact For Christ Church In Rwanda codes on the
+                      Give page.
+                    </p>
+                  </div>
                   <div>
                     <p className="text-lg font-semibold text-foreground">BPR Bank Rwanda</p>
                     <p>USD Account: 4492634940</p>
@@ -218,7 +228,10 @@ export default function Charity() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Button asChild size="lg" className="h-12 w-full bg-primary text-base hover:bg-primary/90">
-                    <Link href="/give">Give to Charity</Link>
+                    <Link href="#operation-joseph-giving">Support Operation Joseph</Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline" className="h-12 w-full text-base">
+                    <Link href="/give">Church Tithes & Offerings</Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="h-12 w-full text-base">
                     <Link href="/contact">Volunteer With Us</Link>
@@ -252,7 +265,7 @@ export default function Charity() {
               size="lg"
               className="bg-primary text-primary-foreground hover:bg-primary/90"
             >
-              <Link href="/give">Support This Work</Link>
+              <Link href="#operation-joseph-giving">Support This Work</Link>
             </Button>
             <Button
               asChild
@@ -260,7 +273,7 @@ export default function Charity() {
               variant="outline"
               className="border-white/20 bg-transparent text-white hover:bg-white hover:text-foreground"
             >
-              <Link href="/contact">Contact the Team</Link>
+              <Link href="/give">Church Giving Details</Link>
             </Button>
           </div>
         </div>

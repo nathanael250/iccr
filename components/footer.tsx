@@ -3,6 +3,11 @@ import { Mail, Phone, MapPin, Facebook, Twitter, Instagram } from 'lucide-react'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
+  const churchEmail = 'impactforchristrwanda@gmail.com'
+  const churchPhones = [
+    { label: '0782201563', href: 'tel:+250782201563' },
+    { label: '0788681038', href: 'tel:+250788681038' },
+  ]
 
   return (
     <footer className="bg-[#111827] text-secondary-foreground border-t border-white/10">
@@ -80,14 +85,18 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Phone size={16} />
-                <a href="tel:+250" className="opacity-75 hover:opacity-100 transition-opacity">
-                  Contact us
-                </a>
+                <div className="flex flex-col">
+                  {churchPhones.map((phone) => (
+                    <a key={phone.label} href={phone.href} className="opacity-75 hover:opacity-100 transition-opacity">
+                      {phone.label}
+                    </a>
+                  ))}
+                </div>
               </li>
               <li className="flex items-center gap-2">
                 <Mail size={16} />
-                <a href="mailto:info@ifcmrwanda.org" className="opacity-75 hover:opacity-100 transition-opacity">
-                  Email us
+                <a href={`mailto:${churchEmail}`} className="opacity-75 hover:opacity-100 transition-opacity">
+                  {churchEmail}
                 </a>
               </li>
             </ul>

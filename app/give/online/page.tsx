@@ -4,31 +4,13 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import Link from 'next/link'
-import { CreditCard, HeartHandshake, Landmark, ShieldCheck } from 'lucide-react'
+import { ShieldCheck } from 'lucide-react'
 
 export const metadata = {
   title: 'Online Giving - Impact For Christ Church In Rwanda',
   description:
     'Complete your donation online and support the ministry work of Impact For Christ Church In Rwanda.',
 }
-
-const paymentMethods = [
-  {
-    title: 'Card Payment',
-    description: 'Pay securely with Visa, Mastercard, or other supported cards.',
-    Icon: CreditCard,
-  },
-  {
-    title: 'Mobile Money',
-    description: 'Use mobile money for quick online giving and easy confirmation.',
-    Icon: HeartHandshake,
-  },
-  {
-    title: 'Bank Transfer',
-    description: 'Start a bank payment and complete your giving with bank details.',
-    Icon: Landmark,
-  },
-]
 
 export default function OnlineGivingPage() {
   return (
@@ -122,31 +104,26 @@ export default function OnlineGivingPage() {
               </div>
 
               <div className="space-y-4">
-                <Label>Payment Method</Label>
-                <div className="grid gap-4 md:grid-cols-3">
-                  {paymentMethods.map(({ title, description, Icon }, index) => (
-                    <label
-                      key={title}
-                      className="flex cursor-pointer flex-col rounded-3xl border border-border bg-card p-5 transition hover:border-primary/40 hover:bg-primary/5"
+                <Label>Church Offering Codes</Label>
+                <div className="grid gap-4 md:grid-cols-2">
+                  {[
+                    '*182*8*1*512347#',
+                    '*182*8*1*100545#',
+                  ].map((code) => (
+                    <div
+                      key={code}
+                      className="rounded-3xl border border-primary/15 bg-primary/5 p-5"
                     >
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="radio"
-                          name="payment-method"
-                          defaultChecked={index === 0}
-                          className="h-4 w-4 accent-[#EB5F27]"
-                        />
-                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                          <Icon className="h-5 w-5" />
-                        </div>
-                      </div>
-                      <p className="mt-4 text-base font-semibold text-foreground">
-                        {title}
+                      <p className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                        Church Code
                       </p>
-                      <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                        {description}
+                      <p className="mt-3 text-xl font-semibold text-foreground">
+                        {code}
                       </p>
-                    </label>
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        IMPACT FOR CHRIST CHURCH IN RWANDA
+                      </p>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -184,13 +161,13 @@ export default function OnlineGivingPage() {
               </CardHeader>
               <CardContent className="space-y-4 text-sm leading-7 text-muted-foreground">
                 <p>
-                  Your donation details are prepared here before final payment.
-                  This page can be connected to your preferred payment gateway
-                  for live online processing.
+                  Use this page to prepare church giving information before
+                  completing your mobile money offering with the church codes.
                 </p>
                 <p>
-                  If you prefer, you can also use mobile money or bank transfer
-                  from the main Give page.
+                  The church offering codes are `*182*8*1*512347#` and
+                  `*182*8*1*100545#`, both named Impact For Christ Church In
+                  Rwanda.
                 </p>
               </CardContent>
             </Card>
@@ -201,14 +178,11 @@ export default function OnlineGivingPage() {
               </CardHeader>
               <CardContent className="space-y-3 text-sm leading-7 text-muted-foreground">
                 <p>
-                  Need help completing your donation? Reach out to the church
+                  Need help completing your church donation? Reach out to the church
                   office and our team will guide you.
                 </p>
                 <p className="font-medium text-foreground">
-                  operationjosephrwanda@gmail.com
-                </p>
-                <p className="font-medium text-foreground">
-                  +250 788 304 392
+                  impactforchristrwanda@gmail.com
                 </p>
                 <Button asChild className="mt-2 w-full bg-secondary text-secondary-foreground hover:bg-secondary/90">
                   <Link href="/contact">Contact Support</Link>
