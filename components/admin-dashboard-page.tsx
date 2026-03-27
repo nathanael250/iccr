@@ -7,6 +7,7 @@ import {
   BellRing,
   CalendarDays,
   FolderKanban,
+  HandCoins,
   HandHeart,
   ImageIcon,
   LayoutDashboard,
@@ -41,25 +42,16 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-const sidebarSections = [
-  {
-    label: 'Main',
-    items: [
-      { name: 'Overview', href: '/admin/dashboard', icon: LayoutDashboard, available: true },
-      { name: 'Projects', icon: FolderKanban, available: false },
-      { name: 'Events', icon: CalendarDays, available: false },
-      { name: 'Media', icon: ImageIcon, available: false },
-    ],
-  },
-  {
-    label: 'Church',
-    items: [
-      { name: 'Partnerships', icon: HandHeart, available: false },
-      { name: 'Members', icon: Users, available: false },
-      { name: 'Messages', icon: MessageSquareMore, available: false },
-      { name: 'Settings', icon: Settings, available: false },
-    ],
-  },
+const sidebarItems = [
+  { name: 'Overview', href: '/admin/dashboard', icon: LayoutDashboard, available: true },
+  { name: 'Projects', icon: FolderKanban, available: false },
+  { name: 'Events', icon: CalendarDays, available: false },
+  { name: 'Media', icon: ImageIcon, available: false },
+  { name: 'Members', icon: Users, available: false },
+  { name: 'Partners', icon: HandHeart, available: false },
+  { name: 'Prayer Requests', icon: MessageSquareMore, available: false },
+  { name: 'Giving', icon: HandCoins, available: false },
+  { name: 'Settings', icon: Settings, available: false },
 ]
 
 const stats = [
@@ -119,7 +111,7 @@ export function AdminDashboardPage() {
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
       <div className="flex min-h-screen">
-        <aside className="hidden w-72 shrink-0 flex-col bg-secondary text-white lg:flex">
+        <aside className="hidden w-72 shrink-0 flex-col bg-[#111827] text-white lg:flex">
           <div className="border-b border-white/10 px-6 py-6">
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-primary">
@@ -134,45 +126,36 @@ export function AdminDashboardPage() {
             </div>
           </div>
 
-          <div className="flex-1 space-y-8 overflow-y-auto px-4 py-6">
-            {sidebarSections.map((section) => (
-              <div key={section.label}>
-                <p className="px-3 text-xs font-semibold uppercase tracking-[0.24em] text-white/50">
-                  {section.label}
-                </p>
-                <div className="mt-3 space-y-1">
-                  {section.items.map(({ name, href, icon: Icon, available }) => {
-                    const isActive = available && pathname === href
-                    const classes = `flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium transition ${
-                      isActive
-                        ? 'bg-white text-secondary shadow-sm'
-                        : available
-                          ? 'text-white/82 hover:bg-white/10 hover:text-white'
-                          : 'cursor-not-allowed text-white/45'
-                    }`
+          <div className="flex-1 space-y-1 overflow-y-auto px-4 py-6">
+            {sidebarItems.map(({ name, href, icon: Icon, available }) => {
+              const isActive = available && pathname === href
+              const classes = `flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium transition ${
+                isActive
+                  ? 'bg-white text-secondary shadow-sm'
+                  : available
+                    ? 'text-white/82 hover:bg-white/10 hover:text-white'
+                    : 'cursor-not-allowed text-white/45'
+              }`
 
-                    if (!available) {
-                      return (
-                        <div key={name} className={classes}>
-                          <Icon className="h-4 w-4" />
-                          <span className="flex-1">{name}</span>
-                          <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">
-                            Soon
-                          </span>
-                        </div>
-                      )
-                    }
+              if (!available) {
+                return (
+                  <div key={name} className={classes}>
+                    <Icon className="h-4 w-4" />
+                    <span className="flex-1">{name}</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">
+                      Soon
+                    </span>
+                  </div>
+                )
+              }
 
-                    return (
-                      <Link key={name} href={href!} className={classes}>
-                        <Icon className="h-4 w-4" />
-                        <span>{name}</span>
-                      </Link>
-                    )
-                  })}
-                </div>
-              </div>
-            ))}
+              return (
+                <Link key={name} href={href!} className={classes}>
+                  <Icon className="h-4 w-4" />
+                  <span>{name}</span>
+                </Link>
+              )
+            })}
           </div>
 
           <div className="border-t border-white/10 p-4">
@@ -217,8 +200,7 @@ export function AdminDashboardPage() {
             </header>
 
             <div className="mt-4 flex flex-wrap gap-2 lg:hidden">
-              {sidebarSections
-                .flatMap((section) => section.items)
+              {sidebarItems
                 .slice(0, 4)
                 .map(({ name, href, available }) =>
                   available ? (

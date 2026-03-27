@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import brigittePortrait from '../../../src/assets/Team/brigitte.png'
-import eliasPortrait from '../../../src/assets/Team/eliasbizuru edied.png'
+import eliasPortrait from '../../../src/assets/Team/elias bizuru.png'
 import georgesPortrait from '../../../src/assets/Team/Georges.png'
 
 export const metadata = {
