@@ -31,11 +31,11 @@ export function AdminPartnersPage() {
       title="Partners"
       description="Review the partnership requests submitted through the partnership form and open each request to inspect the full information."
     >
-      <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
+      <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-100 overflow-hidden">
         <CardContent className="px-0 pb-2">
           <Table>
             <TableHeader>
-              <TableRow className="border-slate-200">
+              <TableRow className="border-slate-100 bg-slate-50/70">
                 <TableHead className="px-6">Organization</TableHead>
                 <TableHead>Contact Person</TableHead>
                 <TableHead>Country</TableHead>
@@ -45,7 +45,7 @@ export function AdminPartnersPage() {
             </TableHeader>
             <TableBody>
               {partners.map((partner) => (
-                <TableRow key={partner.id} className="border-slate-200">
+                <TableRow key={partner.id} className="border-slate-100 transition-colors hover:bg-slate-50">
                   <TableCell className="px-6 py-4 font-medium text-slate-950">
                     {partner.organizationName}
                   </TableCell>
@@ -53,7 +53,11 @@ export function AdminPartnersPage() {
                   <TableCell className="py-4 text-slate-600">{partner.country}</TableCell>
                   <TableCell className="py-4 text-slate-600">{partner.status}</TableCell>
                   <TableCell className="py-4 pr-6 text-right">
-                    <Button asChild variant="outline" className="rounded-xl border-slate-200">
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="rounded-xl border-slate-200 text-slate-700 text-sm hover:border-secondary/40 hover:text-secondary transition-colors"
+                    >
                       <Link href={`/admin/partners/${partner.id}`}>
                         <Eye className="h-4 w-4" />
                         View

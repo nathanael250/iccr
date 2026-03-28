@@ -55,7 +55,7 @@ export function AdminRequestDetailPage({ kind }: AdminRequestDetailPageProps) {
               />
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-secondary">
                 {isMember ? 'Membership Request' : 'Partnership Request'}
               </p>
               <h2 className="mt-3 text-2xl font-semibold text-slate-950">

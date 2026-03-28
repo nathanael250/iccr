@@ -32,7 +32,11 @@ export function AdminProjectsPage() {
       title="Projects"
       description="See all posted projects, review their primary image and summary, then open a project to edit or create a new one."
       actions={
-        <Button asChild className="rounded-2xl">
+        <Button
+          asChild
+          className="rounded-xl gap-1.5 text-sm font-semibold text-white shadow-md transition-all hover:opacity-90"
+          style={{ background: 'linear-gradient(135deg, #EB5F27, #c94a1a)', boxShadow: '0 4px 14px rgba(235,95,39,0.35)' }}
+        >
           <Link href="/admin/projects/new">
             <Plus className="h-4 w-4" />
             Add Project
@@ -40,11 +44,11 @@ export function AdminProjectsPage() {
         </Button>
       }
     >
-      <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
+      <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-100 overflow-hidden">
         <CardContent className="px-0 pb-2">
           <Table>
             <TableHeader>
-              <TableRow className="border-slate-200">
+              <TableRow className="border-slate-100 bg-slate-50/70">
                 <TableHead className="px-6">Project</TableHead>
                 <TableHead>Location</TableHead>
                 <TableHead>Status</TableHead>
@@ -54,7 +58,7 @@ export function AdminProjectsPage() {
             </TableHeader>
             <TableBody>
               {projects.map((project) => (
-                <TableRow key={project.id} className="border-slate-200">
+                <TableRow key={project.id} className="border-slate-100 transition-colors hover:bg-slate-50">
                   <TableCell className="px-6 py-4">
                     <div className="flex items-start gap-4">
                       <img
@@ -72,7 +76,10 @@ export function AdminProjectsPage() {
                   </TableCell>
                   <TableCell className="py-4 text-slate-600">{project.location}</TableCell>
                   <TableCell className="py-4">
-                    <Badge className="bg-primary/10 text-primary hover:bg-primary/10">
+                    <Badge
+                      className="rounded-full px-3 py-0.5 text-xs font-semibold"
+                      style={{ background: 'rgba(2,95,171,0.1)', color: '#025FAB' }}
+                    >
                       {project.status}
                     </Badge>
                   </TableCell>
@@ -80,7 +87,11 @@ export function AdminProjectsPage() {
                     {new Date(project.updatedAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell className="py-4 pr-6 text-right">
-                    <Button asChild variant="outline" className="rounded-xl border-slate-200">
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="rounded-xl border-slate-200 text-slate-700 text-sm hover:border-secondary/40 hover:text-secondary transition-colors"
+                    >
                       <Link href={`/admin/projects/${project.id}/edit`}>
                         <PencilLine className="h-4 w-4" />
                         Edit

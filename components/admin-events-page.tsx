@@ -32,7 +32,11 @@ export function AdminEventsPage() {
       title="Events"
       description="Manage the event cards shown on the website, then open the event editor to create or change one with a live preview."
       actions={
-        <Button asChild className="rounded-2xl">
+        <Button
+          asChild
+          className="rounded-xl gap-1.5 text-sm font-semibold text-white shadow-md transition-all hover:opacity-90"
+          style={{ background: 'linear-gradient(135deg, #EB5F27, #c94a1a)', boxShadow: '0 4px 14px rgba(235,95,39,0.35)' }}
+        >
           <Link href="/admin/events/new">
             <Plus className="h-4 w-4" />
             Add Event
@@ -40,11 +44,11 @@ export function AdminEventsPage() {
         </Button>
       }
     >
-      <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
+      <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-100 overflow-hidden">
         <CardContent className="px-0 pb-2">
           <Table>
             <TableHeader>
-              <TableRow className="border-slate-200">
+              <TableRow className="border-slate-100 bg-slate-50/70">
                 <TableHead className="px-6">Event</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Location</TableHead>
@@ -54,7 +58,7 @@ export function AdminEventsPage() {
             </TableHeader>
             <TableBody>
               {events.map((event) => (
-                <TableRow key={event.id} className="border-slate-200">
+                <TableRow key={event.id} className="border-slate-100 transition-colors hover:bg-slate-50">
                   <TableCell className="px-6 py-4">
                     <div className="flex items-start gap-4">
                       <img
@@ -64,7 +68,7 @@ export function AdminEventsPage() {
                       />
                       <div>
                         <p className="font-semibold text-slate-950">{event.name}</p>
-                        <p className="mt-1 text-sm text-primary">{event.subtitle}</p>
+                        <p className="mt-1 text-sm text-secondary">{event.subtitle}</p>
                         <p className="mt-1 line-clamp-2 text-sm leading-6 text-slate-600">
                           {event.description}
                         </p>
@@ -77,12 +81,19 @@ export function AdminEventsPage() {
                   </TableCell>
                   <TableCell className="py-4 text-slate-600">{event.location}</TableCell>
                   <TableCell className="py-4">
-                    <Badge className="bg-primary/10 text-primary hover:bg-primary/10">
+                    <Badge
+                      className="rounded-full px-3 py-0.5 text-xs font-semibold"
+                      style={{ background: 'rgba(235,95,39,0.1)', color: '#EB5F27' }}
+                    >
                       {event.featured ? 'Upcoming' : event.category}
                     </Badge>
                   </TableCell>
                   <TableCell className="py-4 pr-6 text-right">
-                    <Button asChild variant="outline" className="rounded-xl border-slate-200">
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="rounded-xl border-slate-200 text-slate-700 text-sm hover:border-secondary/40 hover:text-secondary transition-colors"
+                    >
                       <Link href={`/admin/events/${event.id}/edit`}>
                         <PencilLine className="h-4 w-4" />
                         Edit

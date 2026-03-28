@@ -27,11 +27,11 @@ export function AdminPrayerRequestsPage() {
       title="Prayer Requests"
       description="Review the people who requested prayer and track the request status in one table."
     >
-      <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
+      <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-100 overflow-hidden">
         <CardContent className="px-0 pb-2">
           <Table>
             <TableHeader>
-              <TableRow className="border-slate-200">
+              <TableRow className="border-slate-100 bg-slate-50/70">
                 <TableHead className="px-6">Requester</TableHead>
                 <TableHead>Phone</TableHead>
                 <TableHead>Request</TableHead>
@@ -40,7 +40,7 @@ export function AdminPrayerRequestsPage() {
             </TableHeader>
             <TableBody>
               {requests.map((request) => (
-                <TableRow key={request.id} className="border-slate-200">
+                <TableRow key={request.id} className="border-slate-100 transition-colors hover:bg-slate-50">
                   <TableCell className="px-6 py-4">
                     <p className="font-medium text-slate-950">{request.fullName}</p>
                     <p className="text-sm text-slate-500">{request.email}</p>

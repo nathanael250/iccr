@@ -202,7 +202,7 @@ export function AdminMediaPage() {
                   onClick={() => setSelectedAlbumId(album.id)}
                   className={`w-full rounded-2xl border px-4 py-4 text-left transition ${
                     selectedAlbumId === album.id
-                      ? 'border-primary bg-primary/5'
+                      ? 'border-secondary bg-secondary/5'
                       : 'border-slate-200 bg-white hover:bg-slate-50'
                   }`}
                 >
@@ -238,7 +238,7 @@ export function AdminMediaPage() {
                 </select>
               </div>
               <label className="flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-[28px] border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
-                <UploadCloud className="h-10 w-10 text-primary" />
+                <UploadCloud className="h-10 w-10 text-secondary" />
                 <p className="mt-4 text-base font-medium text-slate-950">
                   Upload album images
                 </p>

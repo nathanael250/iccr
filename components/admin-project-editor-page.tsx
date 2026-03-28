@@ -11,7 +11,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import {
   buildEmptyProject,
@@ -139,247 +138,106 @@ export function AdminProjectEditorPage({
         </>
       }
     >
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_420px]">
-        <div className="space-y-6">
-          <Card className="overflow-hidden border-0 py-0 shadow-sm ring-1 ring-slate-200">
-            <div className="relative h-80 bg-slate-100">
-              <img
-                src={project.primaryImage}
-                alt={project.name}
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent" />
-              <div className="absolute inset-x-6 bottom-6 text-white">
-                <div className="flex flex-wrap gap-2">
-                  <Badge className="bg-white/10 text-white hover:bg-white/10">
-                    {project.category}
-                  </Badge>
-                  <Badge className="bg-primary text-primary-foreground hover:bg-primary">
-                    {project.status}
-                  </Badge>
-                </div>
-                <h2 className="mt-4 text-3xl font-semibold">{project.name}</h2>
-                <p className="mt-3 flex items-center gap-2 text-sm text-white/80">
-                  <MapPin className="h-4 w-4" />
-                  {project.location}
+      <div className="space-y-6">
+        <Card className="overflow-hidden border-0 py-0 shadow-sm ring-1 ring-slate-200">
+          <div className="relative min-h-[440px] bg-slate-100">
+            <img
+              src={project.primaryImage}
+              alt={project.name}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-slate-950/10" />
+            <div className="relative flex h-full min-h-[440px] flex-col justify-between p-6 text-white sm:p-8">
+              <div className="max-w-xl rounded-[24px] border border-white/15 bg-slate-950/25 p-4 backdrop-blur-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">
+                  Hero Image URL
                 </p>
-                <p className="mt-3 max-w-3xl text-sm leading-7 text-white/85">
-                  {project.summary}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-            <div className="space-y-6">
-              <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-                <CardHeader>
-                  <CardTitle>Project Overview</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4 text-sm leading-7 text-slate-600">
-                  <p>{project.overview}</p>
-                  <p>{project.details}</p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-                <CardHeader>
-                  <CardTitle>Key Activities</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {project.highlights.map((item, index) => (
-                    <div
-                      key={`${item}-${index}`}
-                      className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-700"
-                    >
-                      {item}
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="space-y-6">
-              <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-                <CardHeader>
-                  <CardTitle>Impact Snapshot</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm leading-7 text-slate-600">
-                  {project.impact}
-                </CardContent>
-              </Card>
-
-              <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-                <CardHeader>
-                  <CardTitle>Project Objectives</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {project.objectives.map((item, index) => (
-                    <div
-                      key={`${item}-${index}`}
-                      className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-700"
-                    >
-                      {item}
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-            <CardHeader>
-              <CardTitle>Hero Section</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Project Name</Label>
-                <Input
-                  value={project.name}
-                  onChange={(event) => updateField('name', event.target.value)}
-                />
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label>Category</Label>
-                  <Input
-                    value={project.category}
-                    onChange={(event) => updateField('category', event.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Status</Label>
-                  <Input
-                    value={project.status}
-                    onChange={(event) => updateField('status', event.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label>Location</Label>
-                <Input
-                  value={project.location}
-                  onChange={(event) => updateField('location', event.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Primary Image URL</Label>
                 <Input
                   value={project.primaryImage}
                   onChange={(event) => updateField('primaryImage', event.target.value)}
+                  className="mt-3 border-white/15 bg-white/10 text-white placeholder:text-white/45"
                 />
               </div>
-              <div className="space-y-2">
-                <Label>Summary</Label>
+
+              <div className="max-w-4xl">
+                <div className="flex flex-wrap gap-3">
+                  <Input
+                    value={project.category}
+                    onChange={(event) => updateField('category', event.target.value)}
+                    className="h-10 w-auto min-w-[150px] rounded-full border-white/15 bg-white/10 text-white placeholder:text-white/60"
+                  />
+                  <Input
+                    value={project.status}
+                    onChange={(event) => updateField('status', event.target.value)}
+                    className="h-10 w-auto min-w-[130px] rounded-full border-white/15 bg-secondary/85 text-white placeholder:text-white/75"
+                  />
+                </div>
+
+                <Input
+                  value={project.name}
+                  onChange={(event) => updateField('name', event.target.value)}
+                  className="mt-5 h-auto border-0 bg-transparent px-0 text-3xl font-semibold text-white shadow-none placeholder:text-white/60 sm:text-5xl"
+                />
+
+                <div className="mt-4 flex items-center gap-3">
+                  <MapPin className="h-4 w-4 text-white/80" />
+                  <Input
+                    value={project.location}
+                    onChange={(event) => updateField('location', event.target.value)}
+                    className="h-auto border-0 bg-transparent px-0 text-base text-white/85 shadow-none placeholder:text-white/55"
+                  />
+                </div>
+
                 <Textarea
                   value={project.summary}
                   onChange={(event) => updateField('summary', event.target.value)}
-                  className="min-h-28"
+                  className="mt-4 min-h-[120px] max-w-3xl border-0 bg-transparent px-0 text-sm leading-7 text-white/90 shadow-none placeholder:text-white/55"
                 />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
+        </Card>
 
-          <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-            <CardHeader>
-              <CardTitle>Story Sections</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Impact</Label>
-                <Textarea
-                  value={project.impact}
-                  onChange={(event) => updateField('impact', event.target.value)}
-                  className="min-h-24"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Overview</Label>
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="space-y-6">
+            <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
+              <CardHeader>
+                <CardTitle>Project Overview</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 <Textarea
                   value={project.overview}
                   onChange={(event) => updateField('overview', event.target.value)}
-                  className="min-h-32"
+                  className="min-h-[120px] resize-none rounded-2xl border-slate-200 bg-slate-50 text-sm leading-7 text-slate-700"
                 />
-              </div>
-              <div className="space-y-2">
-                <Label>Details</Label>
                 <Textarea
                   value={project.details}
                   onChange={(event) => updateField('details', event.target.value)}
-                  className="min-h-32"
+                  className="min-h-[120px] resize-none rounded-2xl border-slate-200 bg-slate-50 text-sm leading-7 text-slate-700"
                 />
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-            <CardHeader>
-              <CardTitle>Gallery Images</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {project.galleryImages.map((image, index) => (
-                <div key={`${image}-${index}`} className="flex items-center gap-3">
-                  <ImageIcon className="h-4 w-4 text-slate-400" />
-                  <Input
-                    value={image}
-                    onChange={(event) =>
-                      updateArrayItem('galleryImages', index, event.target.value)
-                    }
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    className="rounded-xl"
-                    onClick={() => removeArrayItem('galleryImages', index)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full rounded-xl border-dashed"
-                onClick={() => addArrayItem('galleryImages', '/placeholder.jpg')}
-              >
-                <Plus className="h-4 w-4" />
-                Add gallery image
-              </Button>
-            </CardContent>
-          </Card>
-
-          {[
-            {
-              title: 'Highlights',
-              key: 'highlights' as const,
-            },
-            {
-              title: 'Objectives',
-              key: 'objectives' as const,
-            },
-          ].map((section) => (
-            <Card key={section.key} className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
+            <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
               <CardHeader>
-                <CardTitle>{section.title}</CardTitle>
+                <CardTitle>Key Activities</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {project[section.key].map((item, index) => (
+                {project.highlights.map((item, index) => (
                   <div key={`${item}-${index}`} className="flex items-center gap-3">
                     <Input
                       value={item}
                       onChange={(event) =>
-                        updateArrayItem(section.key, index, event.target.value)
+                        updateArrayItem('highlights', index, event.target.value)
                       }
+                      className="rounded-2xl border-slate-200 bg-slate-50"
                     />
                     <Button
                       type="button"
                       variant="outline"
                       size="icon"
                       className="rounded-xl"
-                      onClick={() => removeArrayItem(section.key, index)}
+                      onClick={() => removeArrayItem('highlights', index)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -389,15 +247,105 @@ export function AdminProjectEditorPage({
                   type="button"
                   variant="outline"
                   className="w-full rounded-xl border-dashed"
-                  onClick={() => addArrayItem(section.key, `${section.title} item`)}
+                  onClick={() => addArrayItem('highlights', 'New activity')}
                 >
                   <Plus className="h-4 w-4" />
-                  Add {section.title.slice(0, -1).toLowerCase()}
+                  Add activity
                 </Button>
               </CardContent>
             </Card>
-          ))}
+          </div>
+
+          <div className="space-y-6">
+            <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
+              <CardHeader>
+                <CardTitle>Impact Snapshot</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Textarea
+                  value={project.impact}
+                  onChange={(event) => updateField('impact', event.target.value)}
+                  className="min-h-[160px] resize-none rounded-2xl border-slate-200 bg-slate-50 text-sm leading-7 text-slate-700"
+                />
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
+              <CardHeader>
+                <CardTitle>Project Objectives</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {project.objectives.map((item, index) => (
+                  <div key={`${item}-${index}`} className="flex items-center gap-3">
+                    <Input
+                      value={item}
+                      onChange={(event) =>
+                        updateArrayItem('objectives', index, event.target.value)
+                      }
+                      className="rounded-2xl border-slate-200 bg-slate-50"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="rounded-xl"
+                      onClick={() => removeArrayItem('objectives', index)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full rounded-xl border-dashed"
+                  onClick={() => addArrayItem('objectives', 'New objective')}
+                >
+                  <Plus className="h-4 w-4" />
+                  Add objective
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
         </div>
+
+        <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
+          <CardHeader>
+            <CardTitle>Project Media</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {project.galleryImages.map((image, index) => (
+              <div key={`${image}-${index}`} className="flex items-center gap-3">
+                <ImageIcon className="h-4 w-4 text-slate-400" />
+                <Input
+                  value={image}
+                  onChange={(event) =>
+                    updateArrayItem('galleryImages', index, event.target.value)
+                  }
+                  className="rounded-2xl border-slate-200 bg-slate-50"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="rounded-xl"
+                  onClick={() => removeArrayItem('galleryImages', index)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full rounded-xl border-dashed"
+              onClick={() => addArrayItem('galleryImages', '/placeholder.jpg')}
+            >
+              <Plus className="h-4 w-4" />
+              Add gallery image
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </AdminShell>
   )

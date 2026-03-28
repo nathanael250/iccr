@@ -102,18 +102,18 @@ export function AdminEventEditorPage({ mode }: AdminEventEditorPageProps) {
           </div>
           <CardContent className="space-y-4 p-6">
             <div className="flex flex-wrap items-center gap-2">
-              <Badge className="bg-primary/10 text-primary hover:bg-primary/10">
+              <Badge className="bg-secondary/10 text-secondary hover:bg-secondary/10">
                 {eventData.category}
               </Badge>
               {eventData.featured ? (
-                <Badge className="bg-primary text-primary-foreground hover:bg-primary">
+                <Badge className="bg-secondary text-secondary-foreground hover:bg-secondary">
                   Featured
                 </Badge>
               ) : null}
             </div>
             <div>
               <h2 className="text-2xl font-semibold text-slate-950">{eventData.name}</h2>
-              <p className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-primary">
+              <p className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-secondary">
                 {eventData.subtitle}
               </p>
               <p className="mt-3 text-sm leading-7 text-slate-600">
@@ -122,17 +122,17 @@ export function AdminEventEditorPage({ mode }: AdminEventEditorPageProps) {
             </div>
             <div className="space-y-3 border-t border-slate-200 pt-4 text-sm text-slate-700">
               <div className="flex items-center gap-3">
-                <CalendarDays className="h-4 w-4 text-primary" />
+                <CalendarDays className="h-4 w-4 text-secondary" />
                 <span>{eventData.date}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Clock3 className="h-4 w-4 text-primary" />
+                <Clock3 className="h-4 w-4 text-secondary" />
                 <span>
                   {eventData.time} / {eventData.timeAlt}
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <MonitorPlay className="h-4 w-4 text-primary" />
+                <MonitorPlay className="h-4 w-4 text-secondary" />
                 <span>{eventData.location}</span>
               </div>
             </div>

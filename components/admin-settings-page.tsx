@@ -48,12 +48,12 @@ export function AdminSettingsPage() {
                     setSettings((current) =>
                       current
                         ? {
-                            ...current,
-                            channels: {
-                              ...current.channels,
-                              [channel.key]: checked,
-                            },
-                          }
+                          ...current,
+                          channels: {
+                            ...current.channels,
+                            [channel.key]: checked,
+                          },
+                        }
                         : current,
                     )
                   }
@@ -88,12 +88,12 @@ export function AdminSettingsPage() {
                     setSettings((current) =>
                       current
                         ? {
-                            ...current,
-                            triggers: {
-                              ...current.triggers,
-                              [trigger.key]: checked,
-                            },
-                          }
+                          ...current,
+                          triggers: {
+                            ...current.triggers,
+                            [trigger.key]: checked,
+                          },
+                        }
                         : current,
                     )
                   }
