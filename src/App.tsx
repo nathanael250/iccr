@@ -6,7 +6,21 @@ import About from '@/app/about/page'
 import AboutLeadership from '@/app/about/leadership/page'
 import Admin from '@/app/admin/page'
 import AdminDashboard from '@/app/admin/dashboard/page'
+import AdminEventEdit from '@/app/admin/events/[eventId]/edit/page'
+import AdminEvents from '@/app/admin/events/page'
+import AdminEventCreate from '@/app/admin/events/new/page'
+import AdminGiving from '@/app/admin/giving/page'
 import AdminLogin from '@/app/admin/login/page'
+import AdminMedia from '@/app/admin/media/page'
+import AdminMemberDetail from '@/app/admin/members/[recordId]/page'
+import AdminMembers from '@/app/admin/members/page'
+import AdminPartnerDetail from '@/app/admin/partners/[recordId]/page'
+import AdminPartners from '@/app/admin/partners/page'
+import AdminPrayerRequests from '@/app/admin/prayer-requests/page'
+import AdminProjectEdit from '@/app/admin/projects/[projectId]/edit/page'
+import AdminProjects from '@/app/admin/projects/page'
+import AdminProjectCreate from '@/app/admin/projects/new/page'
+import AdminSettings from '@/app/admin/settings/page'
 import Charity from '@/app/charity/page'
 import Contact from '@/app/contact/page'
 import Events from '@/app/events/page'
@@ -66,7 +80,21 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/projects" element={<AdminProjects />} />
+          <Route path="/admin/projects/new" element={<AdminProjectCreate />} />
+          <Route path="/admin/projects/:projectId/edit" element={<AdminProjectEdit />} />
+          <Route path="/admin/events" element={<AdminEvents />} />
+          <Route path="/admin/events/new" element={<AdminEventCreate />} />
+          <Route path="/admin/events/:eventId/edit" element={<AdminEventEdit />} />
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/media" element={<AdminMedia />} />
+          <Route path="/admin/members" element={<AdminMembers />} />
+          <Route path="/admin/members/:recordId" element={<AdminMemberDetail />} />
+          <Route path="/admin/partners" element={<AdminPartners />} />
+          <Route path="/admin/partners/:recordId" element={<AdminPartnerDetail />} />
+          <Route path="/admin/prayer-requests" element={<AdminPrayerRequests />} />
+          <Route path="/admin/giving" element={<AdminGiving />} />
+          <Route path="/admin/settings" element={<AdminSettings />} />
           <Route path="/about" element={<About />} />
           <Route path="/about/leadership" element={<AboutLeadership />} />
           <Route path="/charity" element={<Charity />} />

@@ -97,8 +97,7 @@ export default function Home() {
                 John 14:12
               </p>
               <p className="text-gray-200 text-base italic leading-relaxed max-w-xl">
-                "Whoever believes in me will do the works I have been doing, and
-                they will do even greater things."
+                "Most assuredly, I say to you, he who believes in Me, the works that I do he will do also; and greater works than these he will do, because I go to My Father."
               </p>
             </div>
 

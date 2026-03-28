@@ -64,7 +64,7 @@ export default function About() {
                 Impact for Christ Church in Rwanda is a revelation of the Church of the Lord Jesus Christ, governed by Him as the Head, according to the enunciation of the Holy Scriptures, the working of the Holy Spirit and the ministrations instituted by Jesus Himself.
               </p>
               <p className="text-lg leading-8 text-muted-foreground">
-                We are a ministry of the Lord Jesus Christ, where His name is lifted up high and His limitless power demonstrated according to John 14:12, doing the works of Jesus Christ and greater works than He did for those who believe in Him.
+                We are a ministry of the Lord Jesus Christ, where His name is lifted up high and His limitless power demonstrated according to John 14:12 (NKJV), doing the works of Jesus Christ and greater works than He did for those who believe in Him.
               </p>
             </div>
 
@@ -75,7 +75,7 @@ export default function About() {
                 </CardHeader>
                 <CardContent>
                   <p className="leading-8 text-muted-foreground">
-                    John 14:12, “Doing the Works of Jesus Christ” Most assuredly, I say to you, he who believes in Me, the works that I do he will do also and greater works than these he will do, because I go to My Father.
+                    John 14:12 (NKJV), "Doing the Works of Jesus Christ": "Most assuredly, I say to you, he who believes in Me, the works that I do he will do also; and greater works than these he will do, because I go to My Father."
                   </p>
                 </CardContent>
               </Card>

@@ -81,10 +81,10 @@ export default function Charity() {
 
                 <div className="mt-6 rounded-2xl border border-primary/10 bg-primary/5 p-5">
                   <p className="text-lg font-semibold leading-8 text-foreground">
-                    "Fear not, for I will provide for you and your little ones."
+                    "Now therefore, do not be afraid; I will provide for you and your little ones."
                   </p>
                   <p className="mt-2 text-sm font-medium uppercase tracking-[0.18em] text-primary">
-                    Genesis 50:21
+                    Genesis 50:21 (NKJV)
                   </p>
                 </div>
 

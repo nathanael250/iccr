@@ -54,11 +54,11 @@ const leaders = [
   },
   {
     name: 'Pastor Dr NYIRAMBANGUTSE Brigitte',
-    role: 'Senior Pastor / General Overseer',
+    role: 'Pastor in Charge of Impact for Christ Church in Rwanda',
     image: brigittePortrait,
     imagePosition: '50% 12%',
     description:
-      'Pastor Dr. NYIRAMBANGUTSE Brigitte is a servant of God who works under the leadership of Prophet Philip Banda. She serves as the Senior Pastor and General Overseer of Impact for Christ Church in Rwanda and manages the day-to-day life and operations of the church.',
+      'Pastor Dr. NYIRAMBANGUTSE Brigitte is the Pastor in Charge of Impact for Christ Church in Rwanda and leads the church’s ministry, services, members, and operations under the leadership of Prophet Philip Banda.',
   },
   {
     name: 'Pastor NSENGUMUREMYI GASANA Georges',
