@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 
 import Link from 'next/link'
-import { PencilLine, Plus } from 'lucide-react'
+import { PencilLine, Plus, Trash2 } from 'lucide-react'
 
 import { AdminShell } from '@/components/admin-shell'
 import { Badge } from '@/components/ui/badge'
@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { getEvents } from '@/lib/admin/service'
+import { deleteEvent, getEvents } from '@/lib/admin/service'
 import type { AdminEvent } from '@/lib/admin/types'
 
 export function AdminEventsPage() {
@@ -27,6 +27,13 @@ export function AdminEventsPage() {
     getEvents().then(setEvents)
   }, [])
 
+  const handleDelete = async (eventId: string) => {
+    if (!window.confirm('Delete this event?')) return
+
+    await deleteEvent(eventId)
+    setEvents((current) => current.filter((event) => event.id !== eventId))
+  }
+
   return (
     <AdminShell
       title="Events"
@@ -34,8 +41,7 @@ export function AdminEventsPage() {
       actions={
         <Button
           asChild
-          className="rounded-xl gap-1.5 text-sm font-semibold text-white shadow-md transition-all hover:opacity-90"
-          style={{ background: 'linear-gradient(135deg, #EB5F27, #c94a1a)', boxShadow: '0 4px 14px rgba(235,95,39,0.35)' }}
+          className="rounded-xl gap-1.5 bg-secondary text-sm font-semibold text-white shadow-sm transition-all hover:bg-secondary/90"
         >
           <Link href="/admin/events/new">
             <Plus className="h-4 w-4" />
@@ -45,60 +51,72 @@ export function AdminEventsPage() {
       }
     >
       <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-100 overflow-hidden">
-        <CardContent className="px-0 pb-2">
+        <CardContent className="px-0 pb-0">
           <Table>
             <TableHeader>
-              <TableRow className="border-slate-100 bg-slate-50/70">
-                <TableHead className="px-6">Event</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Location</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="pr-6 text-right">Action</TableHead>
+              <TableRow className=" bg-[#5a5c5e] hover:bg-[#5a5c5e]">
+                <TableHead className="w-12 px-4">
+                  <input type="checkbox" className="h-4 w-4 rounded border-white/30 bg-white/10" />
+                </TableHead>
+                <TableHead className="px-4 text-[13px] font-semibold text-white/80">Event Name</TableHead>
+                <TableHead className="text-[13px] font-semibold text-white/80">Date</TableHead>
+                <TableHead className="text-[13px] font-semibold text-white/80">Location</TableHead>
+                <TableHead className="text-[13px] font-semibold text-white/80">Status</TableHead>
+                <TableHead className="pr-6 text-right text-[13px] font-semibold text-white/80">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {events.map((event) => (
-                <TableRow key={event.id} className="border-slate-100 transition-colors hover:bg-slate-50">
-                  <TableCell className="px-6 py-4">
-                    <div className="flex items-start gap-4">
+                <TableRow key={event.id} className="border-slate-100 transition-colors hover:bg-slate-50/70">
+                  <TableCell className="px-4 py-3">
+                    <input type="checkbox" className="h-4 w-4 rounded border-slate-300" />
+                  </TableCell>
+                  <TableCell className="px-4 py-3">
+                    <div className="flex items-center gap-3">
                       <img
                         src={event.flyerImage}
                         alt={event.name}
-                        className="h-20 w-28 rounded-2xl border border-slate-200 object-contain bg-white"
+                        className="h-10 w-10 rounded-full border border-slate-200 object-cover bg-white"
                       />
-                      <div>
-                        <p className="font-semibold text-slate-950">{event.name}</p>
-                        <p className="mt-1 text-sm text-secondary">{event.subtitle}</p>
-                        <p className="mt-1 line-clamp-2 text-sm leading-6 text-slate-600">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-slate-950">{event.name}</p>
+                        <p className="mt-0.5 text-xs text-secondary">{event.subtitle}</p>
+                        <p className="mt-0.5 line-clamp-1 text-xs leading-5 text-slate-500">
                           {event.description}
                         </p>
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="py-4 text-slate-600">
+                  <TableCell className="py-3 text-sm text-slate-600">
                     {event.date}
-                    <div className="text-xs text-slate-500">{event.time}</div>
+                    <div className="text-[11px] text-slate-500">{event.time}</div>
                   </TableCell>
-                  <TableCell className="py-4 text-slate-600">{event.location}</TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-3 text-sm text-slate-600">{event.location}</TableCell>
+                  <TableCell className="py-3">
                     <Badge
-                      className="rounded-full px-3 py-0.5 text-xs font-semibold"
-                      style={{ background: 'rgba(235,95,39,0.1)', color: '#EB5F27' }}
+                      className="rounded-full px-2.5 py-0.5 text-[11px] font-semibold"
+                      style={{ background: 'rgba(2,95,171,0.1)', color: '#025FAB' }}
                     >
                       {event.featured ? 'Upcoming' : event.category}
                     </Badge>
                   </TableCell>
-                  <TableCell className="py-4 pr-6 text-right">
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="rounded-xl border-slate-200 text-slate-700 text-sm hover:border-secondary/40 hover:text-secondary transition-colors"
-                    >
-                      <Link href={`/admin/events/${event.id}/edit`}>
-                        <PencilLine className="h-4 w-4" />
-                        Edit
-                      </Link>
-                    </Button>
+                  <TableCell className="py-3 pr-6 text-right">
+                    <div className="flex justify-end gap-2">
+                      <Button asChild size="icon" className="h-8 w-8 rounded-sm bg-secondary text-white hover:bg-secondary/90">
+                        <Link href={`/admin/events/${event.id}/edit`}>
+                          <PencilLine className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                      <Button
+                        type="button"
+                        size="icon"
+                        variant="outline"
+                        className="h-8 w-8 rounded-sm border-rose-200 text-rose-500 hover:bg-rose-50 hover:text-rose-600"
+                        onClick={() => handleDelete(event.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

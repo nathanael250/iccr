@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'react-router-dom'
@@ -6,14 +6,27 @@ import { ArrowLeft, CheckCircle2, ChevronLeft, ChevronRight, Expand, X } from 'l
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { getPublicProjectContent } from '@/lib/public-content'
 import { getProjectBySlug } from '@/app/projects/data'
 
 export default function ProjectDetailPage() {
   const { slug = '' } = useParams()
-  const project = getProjectBySlug(slug)
+  const [project, setProject] = useState(() => getProjectBySlug(slug) ?? null)
   const galleryImages = project?.images?.length ? project.images : project ? [project.image] : []
   const [activeImageIndex, setActiveImageIndex] = useState(0)
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    setProject(getProjectBySlug(slug) ?? null)
+    setActiveImageIndex(0)
+    setSelectedImageIndex(null)
+
+    getPublicProjectContent(slug).then((record) => {
+      if (record) {
+        setProject(record)
+      }
+    })
+  }, [slug])
 
   if (!project) {
     return (

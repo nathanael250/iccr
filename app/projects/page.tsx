@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { Building2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { projects } from '@/app/projects/data'
+import { projects as fallbackProjects, type Project } from '@/app/projects/data'
+import { getPublicProjectsContent } from '@/lib/public-content'
 
 export const metadata = {
   title: 'Projects - Impact For Christ Church In Rwanda',
@@ -36,6 +39,12 @@ function getStatusClasses(status: string) {
 }
 
 export default function Projects() {
+  const [projects, setProjects] = useState<Project[]>(fallbackProjects)
+
+  useEffect(() => {
+    getPublicProjectsContent().then(setProjects)
+  }, [])
+
   return (
     <div className="w-full">
       <section className="bg-secondary py-16 text-secondary-foreground sm:py-20">

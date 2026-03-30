@@ -1,3 +1,5 @@
+import { useEffect, useMemo, useState } from 'react'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -10,7 +12,7 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import eventFlyer from '../../src/assets/event/image.png'
+import { fallbackEvents, getPublicEventsContent, type PublicEvent } from '@/lib/public-content'
 
 export const metadata = {
   title: 'Events - Impact For Christ Church In Rwanda',
@@ -18,23 +20,18 @@ export const metadata = {
     'Discover the current upcoming church event at Impact For Christ Church In Rwanda.',
 }
 
-const upcomingEvent = {
-  name: 'Youth Online Seminar',
-  subtitle: 'Part Three',
-  date: 'Sunday 29 March 2026',
-  time: '5:30 PM',
-  timeAlt: '17:30',
-  location: 'Google Meet',
-  host: 'Pastor Brigitte',
-  description:
-    "Theme: How To Live The Christian Way In Today's World - Part Three.",
-  category: 'Upcoming Event',
-  image: eventFlyer,
-  meetLink: 'https://meet.google.com/kxv-yvzx-kgh',
-  featured: true,
-}
-
 export default function Events() {
+  const [events, setEvents] = useState<PublicEvent[]>(fallbackEvents)
+
+  useEffect(() => {
+    getPublicEventsContent().then(setEvents)
+  }, [])
+
+  const upcomingEvent = useMemo(
+    () => events.find((event) => event.featured) || events[0] || fallbackEvents[0],
+    [events],
+  )
+
   return (
     <div className="w-full">
       <section className="relative overflow-hidden px-4 py-16 text-white sm:py-24">

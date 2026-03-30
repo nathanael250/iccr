@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-import { ImagePlus, Settings as SettingsIcon, UploadCloud } from 'lucide-react'
+import { ImagePlus, Settings as SettingsIcon, Trash2, UploadCloud } from 'lucide-react'
 
 import { AdminShell } from '@/components/admin-shell'
 import { Button } from '@/components/ui/button'
@@ -13,6 +13,8 @@ import { Textarea } from '@/components/ui/textarea'
 import {
   addImagesToAlbum,
   createMediaAlbum,
+  deleteMediaAlbum,
+  deleteMediaImage,
   getMediaAlbums,
   getMediaSettings,
   saveMediaSettings,
@@ -51,7 +53,7 @@ export function AdminMediaPage() {
     const nextAlbum = await createMediaAlbum({
       name: albumName,
       description: albumDescription,
-      coverImage: '/placeholder.jpg',
+      coverImage: '',
     })
 
     setAlbums((current) => [nextAlbum, ...current])
@@ -71,31 +73,35 @@ export function AdminMediaPage() {
       return
     }
 
-    const uploadedImages = await Promise.all(
-      validFiles.map(
-        (file) =>
-          new Promise<MediaImage>((resolve) => {
-            const reader = new FileReader()
-
-            reader.onload = () => {
-              resolve({
-                id: `${Date.now()}-${file.name}`,
-                name: file.name,
-                url: String(reader.result ?? ''),
-                sizeKb: Math.round(file.size / 1024),
-                uploadedAt: new Date().toISOString(),
-              })
-            }
-
-            reader.readAsDataURL(file)
-          }),
-      ),
+    const updatedAlbum = await addImagesToAlbum(selectedAlbumId, validFiles)
+    setAlbums((current) =>
+      current.map((album) => (album.id === updatedAlbum.id ? updatedAlbum : album)),
     )
+    setUploadMessage(`${validFiles.length} image(s) uploaded.`)
+  }
 
-    await addImagesToAlbum(selectedAlbumId, uploadedImages)
-    const refreshedAlbums = await getMediaAlbums()
-    setAlbums(refreshedAlbums)
-    setUploadMessage(`${uploadedImages.length} image(s) uploaded.`)
+  const handleAlbumDelete = async (albumId: string) => {
+    if (!window.confirm('Delete this album and all its images?')) return
+
+    await deleteMediaAlbum(albumId)
+
+    setAlbums((current) => {
+      const nextAlbums = current.filter((album) => album.id !== albumId)
+      setSelectedAlbumId((currentSelected) =>
+        currentSelected === albumId ? nextAlbums[0]?.id ?? '' : currentSelected,
+      )
+      return nextAlbums
+    })
+  }
+
+  const handleImageDelete = async (imageId: string) => {
+    if (!selectedAlbumId) return
+    if (!window.confirm('Delete this image?')) return
+
+    const updatedAlbum = await deleteMediaImage(selectedAlbumId, imageId)
+    setAlbums((current) =>
+      current.map((album) => (album.id === updatedAlbum.id ? updatedAlbum : album)),
+    )
   }
 
   return (
@@ -116,12 +122,12 @@ export function AdminMediaPage() {
     >
       {settingsOpen ? (
         <Card className="mb-6 border-0 py-0 shadow-sm ring-1 ring-slate-200">
-          <CardHeader>
+          <CardHeader className="px-6 pb-4 pt-6">
             <CardTitle>Media Display Settings</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-4 md:grid-cols-2">
+          <CardContent className="grid gap-4 px-6 pb-6 pt-0 md:grid-cols-2">
             <div className="space-y-2">
-              <Label>Gallery Layout</Label>
+              <Label className="text-sm font-medium text-slate-700">Gallery Layout</Label>
               <select
                 value={settings.layout}
                 onChange={(event) =>
@@ -131,7 +137,7 @@ export function AdminMediaPage() {
                       : current,
                   )
                 }
-                className="flex h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none"
+                className="flex h-12 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none"
               >
                 <option value="grouped-gallery">Grouped gallery</option>
                 <option value="sections">Sectioned layout</option>
@@ -140,7 +146,7 @@ export function AdminMediaPage() {
             </div>
 
             <div className="space-y-2">
-              <Label>Maximum Image Size (MB)</Label>
+              <Label className="text-sm font-medium text-slate-700">Maximum Image Size (MB)</Label>
               <Input
                 type="number"
                 min={1}
@@ -152,11 +158,12 @@ export function AdminMediaPage() {
                       : current,
                   )
                 }
+                className="h-12 rounded-2xl border-slate-200 bg-slate-50"
               />
             </div>
 
             <div className="md:col-span-2">
-              <Button onClick={handleSettingsSave} className="rounded-2xl">
+              <Button onClick={handleSettingsSave} className="rounded-2xl bg-secondary text-white hover:bg-secondary/90">
                 Save Media Settings
               </Button>
             </div>
@@ -167,23 +174,27 @@ export function AdminMediaPage() {
       <div className="grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
         <div className="space-y-6">
           <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-            <CardHeader>
+            <CardHeader className="px-6 pb-4 pt-6">
               <CardTitle>Create Album</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 px-6 pb-6 pt-0">
               <div className="space-y-2">
-                <Label>Album Name</Label>
-                <Input value={albumName} onChange={(event) => setAlbumName(event.target.value)} />
+                <Label className="text-sm font-medium text-slate-700">Album Name</Label>
+                <Input
+                  value={albumName}
+                  onChange={(event) => setAlbumName(event.target.value)}
+                  className="h-12 rounded-2xl border-slate-200 bg-slate-50"
+                />
               </div>
               <div className="space-y-2">
-                <Label>Description</Label>
+                <Label className="text-sm font-medium text-slate-700">Description</Label>
                 <Textarea
                   value={albumDescription}
                   onChange={(event) => setAlbumDescription(event.target.value)}
-                  className="min-h-24"
+                  className="min-h-28 rounded-2xl border-slate-200 bg-slate-50"
                 />
               </div>
-              <Button onClick={handleAlbumCreate} className="w-full rounded-2xl">
+              <Button onClick={handleAlbumCreate} className="w-full rounded-2xl bg-secondary text-white hover:bg-secondary/90">
                 <ImagePlus className="h-4 w-4" />
                 Create Album
               </Button>
@@ -191,27 +202,42 @@ export function AdminMediaPage() {
           </Card>
 
           <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-            <CardHeader>
+            <CardHeader className="px-6 pb-4 pt-6">
               <CardTitle>Albums</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-3 px-6 pb-6 pt-0">
               {albums.map((album) => (
-                <button
+                <div
                   key={album.id}
-                  type="button"
-                  onClick={() => setSelectedAlbumId(album.id)}
-                  className={`w-full rounded-2xl border px-4 py-4 text-left transition ${
+                  className={`rounded-2xl border px-4 py-4 transition ${
                     selectedAlbumId === album.id
                       ? 'border-secondary bg-secondary/5'
-                      : 'border-slate-200 bg-white hover:bg-slate-50'
+                      : 'border-slate-200 bg-white'
                   }`}
                 >
-                  <p className="font-semibold text-slate-950">{album.name}</p>
-                  <p className="mt-1 text-sm text-slate-600">{album.description}</p>
-                  <p className="mt-2 text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
-                    {album.images.length} images
-                  </p>
-                </button>
+                  <div className="flex items-start justify-between gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedAlbumId(album.id)}
+                      className="flex-1 text-left"
+                    >
+                      <p className="font-semibold text-slate-950">{album.name}</p>
+                      <p className="mt-1 text-sm text-slate-600">{album.description}</p>
+                      <p className="mt-2 text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
+                        {album.images.length} images
+                      </p>
+                    </button>
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="outline"
+                      className="h-9 w-9 shrink-0 rounded-xl border-rose-200 text-rose-500 hover:bg-rose-50 hover:text-rose-600"
+                      onClick={() => handleAlbumDelete(album.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               ))}
             </CardContent>
           </Card>
@@ -219,16 +245,16 @@ export function AdminMediaPage() {
 
         <div className="space-y-6">
           <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-            <CardHeader>
+            <CardHeader className="px-6 pb-4 pt-6">
               <CardTitle>Upload To Album</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 px-6 pb-6 pt-0">
               <div className="space-y-2">
-                <Label>Selected Album</Label>
+                <Label className="text-sm font-medium text-slate-700">Selected Album</Label>
                 <select
                   value={selectedAlbumId}
                   onChange={(event) => setSelectedAlbumId(event.target.value)}
-                  className="flex h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none"
+                  className="flex h-12 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none"
                 >
                   {albums.map((album) => (
                     <option key={album.id} value={album.id}>
@@ -260,10 +286,10 @@ export function AdminMediaPage() {
           </Card>
 
           <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-            <CardHeader>
+            <CardHeader className="px-6 pb-4 pt-6">
               <CardTitle>{selectedAlbum?.name ?? 'Album Preview'}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-6 pb-6 pt-0">
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {selectedAlbum?.images.map((image) => (
                   <div
@@ -273,9 +299,20 @@ export function AdminMediaPage() {
                     <div className="aspect-[4/3] bg-slate-100">
                       <img src={image.url} alt={image.name} className="h-full w-full object-cover" />
                     </div>
-                    <div className="px-4 py-3">
-                      <p className="text-sm font-medium text-slate-950">{image.name}</p>
-                      <p className="mt-1 text-xs text-slate-500">{image.sizeKb} KB</p>
+                    <div className="flex items-start justify-between gap-3 px-4 py-3">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium text-slate-950">{image.name}</p>
+                        <p className="mt-1 text-xs text-slate-500">{image.sizeKb} KB</p>
+                      </div>
+                      <Button
+                        type="button"
+                        size="icon"
+                        variant="outline"
+                        className="h-9 w-9 shrink-0 rounded-xl border-rose-200 text-rose-500 hover:bg-rose-50 hover:text-rose-600"
+                        onClick={() => handleImageDelete(image.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
                 ))}

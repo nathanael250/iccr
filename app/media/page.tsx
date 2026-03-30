@@ -1,24 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Camera, Images, X } from 'lucide-react'
-
-const mediaModules = import.meta.glob('/src/assets/media/*.{jpeg,jpg,png,JPEG,JPG,PNG}', {
-  eager: true,
-  import: 'default',
-}) as Record<string, string>
-
-const galleryImages = Object.entries(mediaModules)
-  .sort(([a], [b]) => a.localeCompare(b))
-  .map(([path, src], index) => ({
-    id: index + 1,
-    src,
-    alt: `Impact For Christ Church media photo ${index + 1}`,
-    title: `Gallery Photo ${String(index + 1).padStart(2, '0')}`,
-    featured: index === 0,
-    tall: [0, 2, 5, 8, 11, 15, 20, 23].includes(index),
-  }))
+import {
+  fallbackMediaContent,
+  getPublicMediaContent,
+  type PublicMediaContent,
+  type PublicMediaImage,
+} from '@/lib/public-content'
 
 export const metadata = {
   title: 'Media - Impact For Christ Church In Rwanda',
@@ -27,12 +17,16 @@ export const metadata = {
 }
 
 export default function Media() {
-  const [selectedImage, setSelectedImage] = useState<(typeof galleryImages)[number] | null>(
-    null,
-  )
+  const [mediaContent, setMediaContent] = useState<PublicMediaContent>(fallbackMediaContent)
+  const [selectedImage, setSelectedImage] = useState<PublicMediaImage | null>(null)
 
-  const featuredImages = galleryImages.slice(0, 3)
-  const gridImages = galleryImages.slice(3)
+  useEffect(() => {
+    getPublicMediaContent().then(setMediaContent)
+  }, [])
+
+  const galleryImages = mediaContent.images
+  const featuredImages = useMemo(() => galleryImages.slice(0, 3), [galleryImages])
+  const gridImages = useMemo(() => galleryImages.slice(3), [galleryImages])
 
   return (
     <div className="w-full bg-background">
@@ -135,36 +129,84 @@ export default function Media() {
             </div>
           </div>
 
-          <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 xl:columns-4">
-            {gridImages.map((image) => (
-              <button
-                key={image.id}
-                type="button"
-                onClick={() => setSelectedImage(image)}
-                className="group mb-5 block w-full break-inside-avoid overflow-hidden rounded-[26px] border border-border/70 bg-card p-3 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-              >
-                <div
-                  className={`overflow-hidden rounded-[20px] ${
-                    image.tall ? 'aspect-[4/5]' : 'aspect-[16/10]'
-                  }`}
+          {mediaContent.layout === 'sections' && mediaContent.sections.length ? (
+            <div className="space-y-10">
+              {mediaContent.sections.map((section) => (
+                <div key={section.id} className="space-y-5">
+                  <div>
+                    <h3 className="text-2xl font-bold text-foreground">{section.name}</h3>
+                    {section.description ? (
+                      <p className="mt-2 max-w-3xl text-base leading-7 text-muted-foreground">
+                        {section.description}
+                      </p>
+                    ) : null}
+                  </div>
+
+                  <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {section.images.map((image) => (
+                      <button
+                        key={image.id}
+                        type="button"
+                        onClick={() => setSelectedImage(image)}
+                        className="group block overflow-hidden rounded-[26px] border border-border/70 bg-card p-3 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                      >
+                        <div
+                          className={`overflow-hidden rounded-[20px] ${
+                            image.tall ? 'aspect-[4/5]' : 'aspect-[16/10]'
+                          }`}
+                        >
+                          <img
+                            src={image.src}
+                            alt={image.alt}
+                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                        <div className="px-2 pb-1 pt-4">
+                          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                            {section.name}
+                          </p>
+                          <p className="mt-1 text-base font-semibold text-foreground">
+                            {image.title}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 xl:columns-4">
+              {(mediaContent.layout === 'continuous' ? galleryImages : gridImages).map((image) => (
+                <button
+                  key={image.id}
+                  type="button"
+                  onClick={() => setSelectedImage(image)}
+                  className="group mb-5 block w-full break-inside-avoid overflow-hidden rounded-[26px] border border-border/70 bg-card p-3 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
                 >
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                  />
-                </div>
-                <div className="px-2 pb-1 pt-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                    ICCR Media
-                  </p>
-                  <p className="mt-1 text-base font-semibold text-foreground">
-                    {image.title}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
+                  <div
+                    className={`overflow-hidden rounded-[20px] ${
+                      image.tall ? 'aspect-[4/5]' : 'aspect-[16/10]'
+                    }`}
+                  >
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="px-2 pb-1 pt-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                      {image.albumName || 'ICCR Media'}
+                    </p>
+                    <p className="mt-1 text-base font-semibold text-foreground">
+                      {image.title}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="rounded-[32px] bg-[#111827] px-6 py-10 text-white sm:px-10 sm:py-12">
             <div className="mx-auto max-w-3xl text-center">

@@ -70,13 +70,13 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-slate-950/80" />
         {/* Content */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 py-24 grid lg:grid-cols-2 gap-16 items-center">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-10 py-24 grid lg:grid-cols-[minmax(0,1fr)_minmax(460px,1fr)] gap-8 items-center">
           {/* Left column — main message */}
           <div className="flex flex-col gap-6">
             {/* Tag */}
             <span className="hero-fade-up hero-delay-1 inline-flex items-center gap-2 text-sm font-semibold tracking-[0.24em] uppercase text-primary">
               <span className="w-6 h-px bg-primary" />
-              Welcome to ICCR
+              Welcome to IFCCR
             </span>
 
             {/* Headline */}
@@ -141,64 +141,16 @@ export default function Home() {
           </div>
 
           {/* Right column — info card */}
-          <div className="hidden lg:flex justify-end hero-fade-up hero-delay-5">
-            <div className="hero-card-float bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 w-full max-w-sm flex flex-col gap-6">
-              <div>
-                <p className="text-sm font-semibold tracking-[0.24em] uppercase text-primary mb-2">
-                  Gather With Us
-                </p>
-                <h2 className="text-white text-3xl font-bold leading-snug">
-                  A welcoming church rooted in prayer, fellowship, and outreach.
-                </h2>
-              </div>
-
-              <div className="flex flex-col gap-4">
-                {[
-                  {
-                    Icon: CalendarDays,
-                    title: "Weekly Worship & Fellowship",
-                    desc: "Join our church family for worship, prayer, teaching, and encouragement.",
-                  },
-                  {
-                    Icon: MapPin,
-                    title: "Kigali, Rwanda",
-                    desc: "Reaching people in our city with the love of Christ and practical support.",
-                  },
-                  {
-                    Icon: Heart,
-                    title: "Open Hearts, Open Hands",
-                    desc: "Discover a place to belong, grow in faith, and participate in meaningful outreach.",
-                  },
-                ].map(({ Icon, title, desc }) => (
-                  <div key={title} className="flex gap-3 items-start">
-                    <div className="w-9 h-9 rounded-lg bg-primary/20 text-primary flex items-center justify-center shrink-0">
-                      <Icon className="h-4 w-4" />
-                    </div>
-                    <div>
-                      <p className="text-white text-base font-semibold">
-                        {title}
-                      </p>
-                      <p className="text-gray-300 text-sm mt-0.5 leading-relaxed">
-                        {desc}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex gap-3 mt-2">
-                <Link
-                  href="/contact"
-                  className="flex-1 text-center py-2.5 text-sm font-semibold text-white border border-white/20 rounded-lg hover:bg-white/10 transition-colors duration-200"
-                >
-                  Plan Your Visit
-                </Link>
-                <Link
-                  href="/membership"
-                  className="flex-1 text-center py-2.5 text-sm font-semibold text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors duration-200"
-                >
-                  Join the Family
-                </Link>
+          <div className="hidden lg:flex justify-end self-stretch hero-fade-up hero-delay-5">
+            <div className="hero-card-float flex w-full max-w-[820px] items-stretch">
+              <div className="relative min-h-[700px] w-full overflow-hidden rounded-[24px] shadow-2xl shadow-slate-950/35">
+                <Image
+                  src="/philip bada-1.png"
+                  alt="Prophet Philip Banda"
+                  fill
+                  sizes="(min-width: 1024px) 42vw, 100vw"
+                  className="scale-[1.08] object-contain object-center"
+                />
               </div>
             </div>
           </div>

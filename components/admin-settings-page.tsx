@@ -28,10 +28,10 @@ export function AdminSettingsPage() {
     >
       <div className="grid gap-6 xl:grid-cols-2">
         <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-          <CardHeader>
+          <CardHeader className="px-6 pb-4 pt-6">
             <CardTitle>Notification Channels</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 px-6 pb-6 pt-0">
             {[
               { key: 'inApp', label: 'Dashboard notifications' },
               { key: 'email', label: 'Email notifications' },
@@ -64,10 +64,10 @@ export function AdminSettingsPage() {
         </Card>
 
         <Card className="border-0 py-0 shadow-sm ring-1 ring-slate-200">
-          <CardHeader>
+          <CardHeader className="px-6 pb-4 pt-6">
             <CardTitle>Notification Triggers</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 px-6 pb-6 pt-0">
             {[
               { key: 'membership', label: 'Member registration' },
               { key: 'partnership', label: 'Partnership registration' },
@@ -106,7 +106,7 @@ export function AdminSettingsPage() {
 
       <div className="mt-6">
         <Button
-          className="rounded-2xl"
+          className="rounded-2xl bg-secondary text-white hover:bg-secondary/90"
           onClick={() => saveNotificationSettings(settings)}
         >
           Save Notification Settings

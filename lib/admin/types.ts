@@ -139,6 +139,18 @@ export type NotificationSettings = {
   triggers: NotificationTriggerSettings
 }
 
+export type AdminAuthUser = {
+  id: string
+  email: string
+  name: string
+  role: 'admin' | 'owner'
+}
+
+export type AdminAuthSession = {
+  token: string
+  user: AdminAuthUser
+}
+
 export type AdminOverview = {
   totalGivingCount: number
   totalGivingValue: number
