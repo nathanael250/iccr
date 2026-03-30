@@ -70,9 +70,24 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-slate-950/80" />
         {/* Content */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-10 py-24 grid lg:grid-cols-[minmax(0,1fr)_minmax(460px,1fr)] gap-8 items-center">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-10 py-24 grid lg:grid-cols-[minmax(460px,1fr)_minmax(0,1fr)] gap-8 items-center">
+          {/* Left column — hero graphic */}
+          <div className="hidden lg:flex justify-start self-stretch hero-fade-up hero-delay-5 lg:order-1">
+            <div className="hero-card-float flex w-full max-w-[820px] items-stretch">
+              <div className="relative min-h-[700px] w-full overflow-hidden rounded-[24px] shadow-2xl shadow-slate-950/35">
+                <Image
+                  src="/Untitled-2.png"
+                  alt="Impact For Christ Church hero graphic"
+                  fill
+                  sizes="(min-width: 1024px) 42vw, 100vw"
+                  className="object-contain object-center"
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Left column — main message */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 lg:order-2">
             {/* Tag */}
             <span className="hero-fade-up hero-delay-1 inline-flex items-center gap-2 text-sm font-semibold tracking-[0.24em] uppercase text-primary">
               <span className="w-6 h-px bg-primary" />
@@ -140,20 +155,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right column — info card */}
-          <div className="hidden lg:flex justify-end self-stretch hero-fade-up hero-delay-5">
-            <div className="hero-card-float flex w-full max-w-[820px] items-stretch">
-              <div className="relative min-h-[700px] w-full overflow-hidden rounded-[24px] shadow-2xl shadow-slate-950/35">
-                <Image
-                  src="/philip bada-1.png"
-                  alt="Prophet Philip Banda"
-                  fill
-                  sizes="(min-width: 1024px) 42vw, 100vw"
-                  className="scale-[1.08] object-contain object-center"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </section>
       {/* <section className="relative isolate overflow-hidden px-4">
